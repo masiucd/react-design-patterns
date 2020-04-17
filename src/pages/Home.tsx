@@ -5,7 +5,7 @@ interface Props {
 }
 
 const Home: React.FC<Props> = () => (
-  <div>
+  <div className="Container">
     {' '}
     <h1> Welcome </h1>
     {' '}

@@ -6,6 +6,7 @@ interface Props {
 
 }
 
+
 const NavList: React.FC<Props> = () => (
   <ul className="NavList">
     {navData.map((item) => (

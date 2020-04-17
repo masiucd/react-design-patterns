@@ -12,10 +12,16 @@ html {
 }
 
 body {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   box-sizing: border-box;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   color: #333;
+  line-height: 1.4;
+  height: 100%;
+}
+
+h1,
+h2 {
+  font-family: 'Pacifico', cursive;
 }

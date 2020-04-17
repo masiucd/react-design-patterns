@@ -67,8 +67,89 @@
 
 .UserItem span {
   font-size: 2rem;
-
   color: #fff;
   padding: 1rem;
+}
 
+.Container {
+  width: 100%;
+  padding: 0 .5rem;
+  min-height: 60vh;
+  margin: 2rem auto 0 auto;
+}
+
+.render-content {
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+  padding: 2rem;
+  margin: 5rem auto;
+}
+
+.render-content .btn-group {
+  display: flex;
+
+  padding: 2rem;
+}
+
+.render-content .btn-group button {
+  margin: 1rem;
+}
+
+button {
+  padding: .4rem .2rem;
+  width: 14rem;
+  font-size: 1.7rem;
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(50%, #333), color-stop(50%, #fefefe));
+  background-image: linear-gradient(to right, #333 50%, #fefefe 50%);
+  background-position: 0;
+  background-size: 200%;
+  color: #fff;
+  transition: 300ms ease-in-out;
+  cursor: pointer;
+  text-transform: capitalize;
+  border: none;
+  outline: none;
+  box-shadow: 1px 1px 3px 3px #999;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+
+}
+
+button:hover {
+  color: #333;
+  box-shadow: 2px 8px 4px 3px #999;
+  background-position: -100%;
+}
+
+button:active {
+  position: relative;
+  top: 8px;
+}
+
+@media(min-width:576px) {
+  .Container {
+    max-width: 540px;
+  }
+}
+
+@media(min-width:768px) {
+  .Container {
+    max-width: 720px;
+  }
+}
+
+@media(min-width:992px) {
+  .Container {
+    max-width: 960px;
+  }
+}
+
+@media(min-width:1200px) {
+  .Container {
+    /* max-width: 1140px; */
+    max-width: 80vw;
+  }
 }
