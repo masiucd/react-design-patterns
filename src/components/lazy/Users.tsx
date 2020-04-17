@@ -22,7 +22,7 @@ const Hello: React.FC<Props> = () => {
 
   return (
     <div className="Users">
-      <h2>Users</h2>
+
       <h4>
         Using
         {' '}

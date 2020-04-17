@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Title from '../components/layout/title/Title';
 
 interface Props {
 
@@ -6,9 +7,7 @@ interface Props {
 
 const Home: React.FC<Props> = () => (
   <div className="Container">
-    {' '}
-    <h1> Welcome </h1>
-    {' '}
+    <Title mainTitle="Welcome" subTitle="React Cool concepts" />
   </div>
 );
 export default Home;

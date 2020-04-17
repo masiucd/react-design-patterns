@@ -10,7 +10,7 @@ const RenderProps: React.FC<Props> = () => (
     <CountUi render={(count: number, increase: CountFn, decrease: CountFn) => (
       <div className="render-content">
 
-        <h1>{count}</h1>
+        <h1 className="count">{count}</h1>
         <div className="btn-group">
           <button type="button" onClick={increase}>Increase</button>
           <button type="button" onClick={decrease} disabled={count === 0}>Decrease</button>

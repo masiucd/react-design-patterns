@@ -3,8 +3,48 @@
   padding: 1.5rem 1rem;
 }
 
+.Title {
+  box-shadow: 2px 3px 5px 2px #999;
+  transition: 300ms ease-out;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  max-width: 50vw;
+  margin: 5rem auto 2rem auto;
+  background: #333;
+  color: #fff;
+  transform: rotate(2deg);
+  padding: 1rem 1.5rem;
+}
+
+.Title:hover {
+  box-shadow: 2px 3px 8px 4px #999;
+  transform: rotate(-1deg);
+  max-width: 47vw;
+}
+
+.Title h1 {
+  font-size: 4rem;
+}
+
+.Title h3 {
+  font-size: 3rem;
+}
+
 .NavList {
   padding: 1rem;
+  transition: all 400ms;
+  display: none;
+  -webkit-animation-name: fadeInDown;
+  animation-name: fadeInDown;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+#Navbar:hover .NavList {
   display: flex;
   justify-content: center;
 }
@@ -18,7 +58,16 @@
   font-size: 1.8rem;
   padding: .5rem;
   text-transform: capitalize;
-  color: #333;
+  color: #fff;
+  background: #333;
+  margin: .5rem;
+  box-shadow: 1px 1px 4px 1px #999;
+  transition: all 400ms;
+}
+
+.NavList li a:hover {
+
+  box-shadow: 3px 3px 4px 3px #999;
 }
 
 .App {
@@ -118,6 +167,11 @@ button {
 
 }
 
+.count {
+  font-size: 5rem;
+  border-bottom: 2px solid #333;
+}
+
 button:hover {
   color: #333;
   box-shadow: 2px 8px 4px 3px #999;
@@ -151,5 +205,33 @@ button:active {
   .Container {
     /* max-width: 1140px; */
     max-width: 80vw;
+  }
+}
+
+@-webkit-keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
   }
 }
