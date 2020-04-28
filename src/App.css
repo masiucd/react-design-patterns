@@ -42,6 +42,11 @@
   animation-duration: 1s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
+  z-index: 2;
+  position: absolute;
+
+  transform: translateX(-50%);
+  width: 100%;
 }
 
 #Navbar:hover .NavList {
@@ -124,7 +129,7 @@
   width: 100%;
   padding: 0 .5rem;
   min-height: 60vh;
-  margin: 2rem auto 0 auto;
+  margin: 5rem auto 0 auto;
 }
 
 .render-content {
@@ -181,6 +186,30 @@ button:hover {
 button:active {
   position: relative;
   top: 8px;
+}
+
+.ReducerExample {
+  border: 2px solid red;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ReducerExample h1 {
+  font-size: 4rem;
+
+}
+
+.ReducerExample button {
+  margin: 2rem 0;
+
+}
+
+.ReducerExample h3 {
+  font-size: 3rem;
+
 }
 
 @media(min-width:576px) {

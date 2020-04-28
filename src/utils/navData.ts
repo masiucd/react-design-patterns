@@ -32,4 +32,9 @@ export const navData: INavData[] = [
     text: 'useCallback',
     path: '/usecallback',
   },
+  {
+    id: 6,
+    text: 'useReducer',
+    path: '/usereducer',
+  },
 ];
