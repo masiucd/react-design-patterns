@@ -14,6 +14,7 @@ export interface InitialState {
   light: { hex: string; ui: string; bg: string };
   dark: { hex: string; ui: string; bg: string };
   setTheme: boolean;
+
 }
 
 export const initialState: InitialState = {
@@ -23,7 +24,8 @@ export const initialState: InitialState = {
   setTheme: true,
 };
 
-export const ThemeContext = createContext<InitialState|Record<string, any>>(initialState);
+export const ThemeContext = createContext<InitialState|any>(initialState);
+
 
 interface ToggleThemeAction {
   type: 'TOGGLE_THEME';

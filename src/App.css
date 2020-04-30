@@ -226,6 +226,13 @@ button:active {
   text-align: center;
 }
 
+#toggle-theme {
+  cursor: pointer;
+  font-size: 5rem;
+  position: absolute;
+  top: 0;
+}
+
 .Form {
   /* border: 2px solid #333; */
   padding: 2rem;
