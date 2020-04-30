@@ -50,8 +50,9 @@ const themeReducer = (state: InitialState, action: ActionTypes) => {
 
 const ThemeProvider: React.FC<ThemeProps> = ({ children }) => {
   const [state, dispatch] = useReducer(themeReducer, initialState);
+  const contextValue = React.useMemo(() => ({ state, dispatch }), [state, dispatch]);
   return (
-    <ThemeContext.Provider value={{ state, dispatch }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
