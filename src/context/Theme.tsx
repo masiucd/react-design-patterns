@@ -19,17 +19,16 @@ export interface InitialState {
 
 export const initialState: InitialState = {
   isLight: true,
-  light: { hex: '#333', ui: '#ddd', bg: '#eee' },
-  dark: { hex: '#ddd', ui: '#333', bg: '#555' },
+  light: { hex: '#333', ui: '#ddd', bg: '#fff' },
+  dark: { hex: '#ddd', ui: '#333', bg: '#333' },
   setTheme: true,
 };
 
-export const ThemeContext = createContext<InitialState|any>(initialState);
+export const ThemeContext = createContext<InitialState | any>(initialState);
 
 
 interface ToggleThemeAction {
   type: 'TOGGLE_THEME';
-  payload: boolean;
 }
 
 

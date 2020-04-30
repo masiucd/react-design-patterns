@@ -77,6 +77,7 @@
 
 .App {
   flex-grow: 1 auto;
+
 }
 
 .Users {
@@ -231,6 +232,7 @@ button:active {
   font-size: 5rem;
   position: absolute;
   top: 0;
+  z-index: 5;
 }
 
 .Form {
