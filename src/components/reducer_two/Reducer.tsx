@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/extensions */
 import * as React from 'react';
 import UserProfile from './UserProfile';
 
@@ -23,8 +25,12 @@ interface ErrorAction {
   type: 'ERROR';
   payload: string;
 }
+interface ClearErrorAction {
+  type: 'CLEAR_ERROR';
 
-export type LoginActionType = LoginAction | LogoutAction | ErrorAction
+}
+
+export type LoginActionType = LoginAction | LogoutAction | ErrorAction | ClearErrorAction
 
 
 function formReducer(state: LoginState, action: LoginActionType) {
@@ -46,6 +52,11 @@ function formReducer(state: LoginState, action: LoginActionType) {
       return {
         ...state,
         error: action.payload,
+      };
+    case 'CLEAR_ERROR':
+      return {
+        ...state,
+        error: '',
       };
     default:
       return state;
@@ -84,11 +95,17 @@ const ReducerTwo: React.FC<Props> = () => {
         type: 'ERROR',
         payload: 'password and email is required!!!',
       });
+      setTimeout(() => {
+        dispatch({ type: 'CLEAR_ERROR' });
+      }, 5000);
     } else if (username.length < 5 || password.length < 5) {
       dispatch({
         type: 'ERROR',
         payload: 'please fill in a longer password and username',
       });
+      setTimeout(() => {
+        dispatch({ type: 'CLEAR_ERROR' });
+      }, 5000);
     }
 
     if (username.length > 5 && password.length > 5) {
@@ -107,11 +124,11 @@ const ReducerTwo: React.FC<Props> = () => {
     <>
       {!isLoggedIn ? (
         <>
-          <h2>Login</h2>
+          <h2 id="Login">Login</h2>
           <div className="ErrorBox">
             <h3>{error && error}</h3>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="Form">
             <div className="form-group">
               <label htmlFor="username">
                 <span>Username</span>

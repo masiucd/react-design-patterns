@@ -211,6 +211,75 @@ button:active {
 
 }
 
+.ErrorBox {
+  padding: 2rem;
+}
+
+.ErrorBox h3 {
+  font-size: 2.5rem;
+  color: tomato;
+  text-align: center;
+}
+
+#Login {
+  font-size: 4.5rem;
+  text-align: center;
+}
+
+.Form {
+  /* border: 2px solid #333; */
+  padding: 2rem;
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: 1px 2px 12px 2px rgb(194, 194, 194);
+}
+
+.Form .form-group {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  width: 60vw;
+}
+
+.form-group label {
+
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+}
+
+.form-group label span {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  text-transform: capitalize;
+}
+
+.form-group label input {
+  padding: 1.6rem .8rem;
+  border: none;
+  box-shadow: 1px 2px 12px 2px rgb(194, 194, 194);
+  /* border-bottom: 4px solid #333; */
+  font-size: 1.6rem;
+  text-transform: capitalize;
+  outline: none;
+  transition: 200ms all;
+}
+
+.form-group label input:focus {
+  border: 2px solid #333;
+  box-shadow: 3px 2px 12px 6px rgb(194, 194, 194);
+}
+
+.Form button {
+  margin: 3rem 0 1rem 0;
+  width: 26rem;
+}
+
 @media(min-width:576px) {
   .Container {
     max-width: 540px;
