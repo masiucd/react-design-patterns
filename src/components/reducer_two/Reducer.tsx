@@ -2,6 +2,7 @@
 /* eslint-disable import/extensions */
 import * as React from 'react';
 import UserProfile from './UserProfile';
+import { ThemeContext } from '../../context/Theme';
 
 const { useReducer, useState } = React;
 
@@ -71,7 +72,7 @@ interface Props {
 
 const ReducerTwo: React.FC<Props> = () => {
   const [state, dispatch] = useReducer(formReducer, initialState);
-
+  const { state: themeState } = React.useContext(ThemeContext);
   const { user, isLoggedIn, error } = state;
   const [formData, setformData] = useState<User>({
     username: '',
@@ -120,18 +121,21 @@ const ReducerTwo: React.FC<Props> = () => {
     }
   };
 
+
+  const theme = themeState.setTheme ? themeState.light : themeState.dark;
+
   return (
     <>
       {!isLoggedIn ? (
         <>
-          <h2 id="Login">Login</h2>
+          <h2 id="Login" style={{ color: theme.hex }}>Login</h2>
           <div className="ErrorBox">
             <h3>{error && error}</h3>
           </div>
           <form onSubmit={handleSubmit} className="Form">
             <div className="form-group">
               <label htmlFor="username">
-                <span>Username</span>
+                <span style={{ color: theme.hex }}>Username</span>
                 <input
                   type="text"
                   onChange={handleChange}
@@ -143,7 +147,7 @@ const ReducerTwo: React.FC<Props> = () => {
             </div>
             <div className="form-group">
               <label htmlFor="password">
-                <span>password</span>
+                <span style={{ color: theme.hex }}>password</span>
                 <input
                   type="text"
                   onChange={handleChange}

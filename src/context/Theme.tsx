@@ -7,6 +7,7 @@ interface ThemeProps{
   children: React.ReactNode;
 }
 
+
 const { useReducer, createContext } = React;
 
 export interface InitialState {
@@ -24,15 +25,15 @@ export const initialState: InitialState = {
   setTheme: true,
 };
 
-export const ThemeContext = createContext<InitialState | any>(initialState);
-
-
 interface ToggleThemeAction {
   type: 'TOGGLE_THEME';
 }
-
-
 type ActionTypes = ToggleThemeAction
+
+export type MyDispatchType = React.Dispatch<ToggleThemeAction>
+
+export const ThemeContext = createContext<InitialState | any>(initialState);
+
 
 const themeReducer = (state: InitialState, action: ActionTypes) => {
   switch (action.type) {
