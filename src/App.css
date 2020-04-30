@@ -189,7 +189,6 @@ button:active {
 }
 
 .ReducerExample {
-  border: 2px solid red;
   padding: 2rem;
   display: flex;
   justify-content: center;

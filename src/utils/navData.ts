@@ -37,4 +37,9 @@ export const navData: INavData[] = [
     text: 'useReducer',
     path: '/usereducer',
   },
+  {
+    id: 7,
+    text: 'useReducerTwo',
+    path: '/usereducertwo',
+  },
 ];

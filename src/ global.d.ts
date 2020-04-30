@@ -5,3 +5,20 @@ declare module '*.module.less' {
 
 
 type CountFn = () => void
+
+interface User{
+  username: string;
+  password: string;
+}
+interface LoginState {
+  user: User | null;
+  error: string;
+  isLoggedIn: boolean;
+  isLoading: boolean;
+}
+
+
+interface FormData{
+  username: string;
+  password: string;
+}
