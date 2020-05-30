@@ -289,6 +289,16 @@ button:active {
   width: 26rem;
 }
 
+
+.UseMemoPage {
+  border: 2px solid red;
+  max-width: 1000px;
+  margin: 2rem auto;
+  height: 100%;
+  padding: 2rem;
+
+}
+
 @media(min-width:576px) {
   .Container {
     max-width: 540px;

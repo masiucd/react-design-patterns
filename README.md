@@ -13,3 +13,6 @@ It's just ver basic examples but that will get you a good perspective on how the
 * useCallback
 * useReducer
 * Code splitting with Lazy
+
+UseMemo = Almost like a should component update in class based components.
+It Memoize the value and will not re-render the component  if the value has not changed.

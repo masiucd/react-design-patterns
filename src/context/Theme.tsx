@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 
-interface ThemeProps{
+interface ThemeProps {
   children: React.ReactNode;
 }
 
@@ -20,8 +20,8 @@ export interface InitialState {
 
 export const initialState: InitialState = {
   isLight: true,
-  light: { hex: '#333', ui: '#ddd', bg: '#fff' },
-  dark: { hex: '#ddd', ui: '#333', bg: '#333' },
+  light: { hex: '#212121', ui: '#ddd', bg: '#fff' },
+  dark: { hex: '#fff', ui: '#212121', bg: '#212121' },
   setTheme: true,
 };
 
