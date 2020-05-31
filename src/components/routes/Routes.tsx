@@ -10,6 +10,7 @@ const RenderPropsPage = React.lazy(() => import('../../pages/RenderProps'));
 const UseReducerPage = React.lazy(() => import('../../pages/UseReducerPage'));
 const UseReducerPageTwo = React.lazy(() => import('../../pages/UseReducerTwo'));
 // const UseMemoPage = React.lazy(() => import('../../pages/UseMemoPage'));
+const ScrollPage = React.lazy(() => import('../../pages/ScrollPAge'));
 
 interface Props {
 
@@ -25,6 +26,7 @@ const Routes: React.FC<Props> = () => (
         <Route exact path="/usereducer" component={UseReducerPage} />
         <Route exact path="/usereducertwo" component={UseReducerPageTwo} />
         <Route exact path="/usememo" component={UseMemoPage} />
+        <Route exact path="/scroll" component={ScrollPage} />
       </Switch>
     </React.Suspense>
   </>

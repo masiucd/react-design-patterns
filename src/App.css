@@ -291,12 +291,24 @@ button:active {
 
 
 .UseMemoPage {
-  border: 2px solid red;
+
   max-width: 1000px;
   margin: 2rem auto;
   height: 100%;
   padding: 2rem;
 
+}
+
+.Scrollcontent {
+  padding: 2rem;
+}
+
+
+.Scrollcontent p {
+  font-size: 2rem;
+  line-height: 3rem;
+  padding: 1rem;
+  ;
 }
 
 @media(min-width:576px) {

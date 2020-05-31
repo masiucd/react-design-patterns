@@ -42,4 +42,9 @@ export const navData: INavData[] = [
     text: 'useReducerTwo',
     path: '/usereducertwo',
   },
+  {
+    id: 8,
+    text: 'scroll page',
+    path: '/scroll',
+  },
 ];
