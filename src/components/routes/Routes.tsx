@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import UseMemoPage from '../../pages/UseMemoPage';
 
+
 const Home = React.lazy(() => import('../../pages/Home'));
 const Lazy = React.lazy(() => import('../../pages/Lazy'));
 const RenderPropsPage = React.lazy(() => import('../../pages/RenderProps'));
@@ -27,6 +28,7 @@ const Routes: React.FC<Props> = () => (
         <Route exact path="/usereducertwo" component={UseReducerPageTwo} />
         <Route exact path="/usememo" component={UseMemoPage} />
         <Route exact path="/scroll" component={ScrollPage} />
+
       </Switch>
     </React.Suspense>
   </>

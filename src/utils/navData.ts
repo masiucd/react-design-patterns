@@ -47,4 +47,5 @@ export const navData: INavData[] = [
     text: 'scroll page',
     path: '/scroll',
   },
+
 ];
