@@ -2,12 +2,15 @@
 
 ## Table of Contents
 
-- [About](#about)
-- [Getting Started](#getting_started)
-- [React Without JSX](#without_jsx)
-- [JSX under the hood](#jsx_under_the_hood)
-- [Forms](#forms)
-- [Key prop](#key_prop)
+- [about](#about)
+- [getting Started](#getting_started)
+- [react Without JSX](#without_jsx)
+- [jsx under the hood](#jsx_under_the_hood)
+- [forms](#forms)
+- [key prop](#key_prop)
+- [useState](#useState)
+- [useEffect](#useEffect)
+- [hooksFlow](#hooks_flow)
 
 ## About <a name = "about"></a>
 
@@ -156,3 +159,6 @@ Keys should be given to the elements inside the array to give the elements a sta
 
 - A key cannot be identical to that of a sibling component.
 - A key should not ever change between renders.
+
+The key should never change, for example if you hade a list with items and each item used the index as its key (_don't use the index as the key!!!_)
+you could pretty fast spot on some problems, everything works for now but what happened if you remove a existing item from the list. The index value will also change and `React` will lose to keep track on what item it should observe. Never use the key or any dynamic key that would change.
