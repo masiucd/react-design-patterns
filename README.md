@@ -10,6 +10,7 @@
 - [key prop](#key_prop)
 - [useState](#useState)
 - [useEffect](#useEffect)
+- [custom hooks](#custom_hooks)
 - [hooksFlow](#hooks_flow)
 
 ## About <a name = "about"></a>
@@ -227,3 +228,72 @@ function Greeting({ initialName = "" }) {
 Why I using a function as my initialValue?
 It's a technique that React accepts that will make a lazy load, reading from local-storage can be slow and we don't want to read from local-storage if our initialValue has not been changed.
 This is a great way to optimize your application a bit.
+
+### customHooks <a name = "custom_hooks"></a>
+
+`usePrevious` hook the get the reference from the previous value
+
+```tsx
+function usePrevious<T>(value: T = "") {
+  // The ref object is a generic container whose current property is mutable ...
+  // ... and can hold any value, similar to an instance property on a class
+  const ref = useRef()
+
+  // Store current value in ref
+  useEffect(() => {
+    ref.current = value
+  }, [value]) // Only re-run if value changes
+
+  // Return previous value (happens before update in useEffect above)
+  return ref.current
+}
+```
+
+A advanced version of a custom `useLocalStorage hook`, great example by [Kent C Dodds](https://github.com/kentcdodds) showing how this could been done in [Epic React Course](https://epicreact.dev/):
+
+```tsx
+function useLocalStorage<T>(
+  key: string,
+  initialValue: T = "",
+  { serialize = JSON.stringify, deserialize = JSON.parse } = {}
+) {
+  const [value, setValue] = React.useState(() => {
+    const valueInLocalStorage = localStorage.getItem(key)
+    if (valueInLocalStorage) {
+      return deserialize(valueInLocalStorage)
+    }
+    return typeof initialValue === "function" ? initialValue() : initialValue
+  })
+
+  const prevRefKey = React.useRef(key)
+
+  React.useEffect(() => {
+    const prevKey = prevRefKey.current
+    if (prevKey !== key) {
+      localStorage.removeItem(prevKey)
+    }
+    prevRefKey.current = key
+    localStorage.setItem(key, serialize(value))
+  }, [value, key, serialize])
+
+  return { value, setValue }
+}
+
+function Greeting({ initialName = "" }) {
+  const { value: name, setValue: setName } = useLocalStorage("name", initialName)
+
+  function handleChange(event) {
+    setName(event.target.value)
+  }
+
+  return (
+    <div>
+      <form>
+        <label htmlFor="name">Name: </label>
+        <input onChange={handleChange} id="name" />
+      </form>
+      {name ? <strong>Hello {name}</strong> : "Please type your name"}
+    </div>
+  )
+}
+```
