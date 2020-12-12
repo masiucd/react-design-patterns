@@ -6,7 +6,9 @@
 - [Getting Started](#getting_started)
 - [React Without JSX](#without_jsx)
 - [JSX under the hood](#jsx_under_the_hood)
-- [Forms](#forms)
+  <<<<<<< HEAD
+- # [Forms](#forms)
+  > > > > > > > docs
 
 ## About <a name = "about"></a>
 
