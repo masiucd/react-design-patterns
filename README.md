@@ -6,9 +6,7 @@
 - [Getting Started](#getting_started)
 - [React Without JSX](#without_jsx)
 - [JSX under the hood](#jsx_under_the_hood)
-  <<<<<<< HEAD
-- # [Forms](#forms)
-  > > > > > > > docs
+- [Forms](#forms)
 
 ## About <a name = "about"></a>
 
@@ -96,7 +94,7 @@ function Element() {
 }
 ```
 
-### React forms <a name = "forms></a>
+## React forms <a name = "forms></a>
 
 In React,There is not so much you have to learn in React to interest with forms, comparing to how you are use to in vanilla javascript.
 You will attach a submit event on the form element that takes a onSubmit prop.
