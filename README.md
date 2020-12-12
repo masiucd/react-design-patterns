@@ -94,7 +94,7 @@ function Element() {
 }
 ```
 
-## React forms <a name = "forms></a>
+### React forms <a name = "forms"></a>
 
 In React,There is not so much you have to learn in React to interest with forms, comparing to how you are use to in vanilla javascript.
 You will attach a submit event on the form element that takes a onSubmit prop.
@@ -108,3 +108,41 @@ Maybe you want to set their value as soon when the user submits a button element
 This is why React supports Controlled Form inputs.
 
 When using uncontrolled inputs like `refs` for example, you will only get the final value from your inputs while you submit the form.
+
+Example how we use a username form with controlled inputs.
+
+```jsx
+import * as React from "react"
+
+function UsernameForm({ onSubmitUsername }) {
+  const [username, setUsername] = React.useState("")
+  const [error, setError] = React.useState(false)
+
+  const handleSubmit = e => {
+    e.preventDefault()
+  }
+
+  const handleChange = e => {
+    const { value } = e.target
+    const isLowerCaseUsername = value === value.toLowerCase()
+    setError(!isLowerCaseUsername && true)
+    setUsername(value)
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="username">Username:</label>
+
+        <input id="username" type="text" onChange={handleChange} value={username} name="username" />
+      </div>
+      {error && (
+        <div className="error" style={{ color: "red", backgroundColor: "#333" }}>
+          username can not contain uppercase letters
+        </div>
+      )}
+      <button type="submit">Submit</button>
+    </form>
+  )
+}
+```
