@@ -1,19 +1,25 @@
-# React concepts
+# Epic React 
 
-Simple examples of how new concepts and tools works in React. For my purpose but also for you if you want a simple example of how and when to use this tools, free free to check them out.
 
-It's just ver basic examples but that will get you a good perspective on how the new *React hooks* actually works!😎
+### How to create React elements without JSX
 
-### What is included  > ? ⚛️😄
+React is javascript so basicclu under the hood it similar like you are problbly used to with the regular DOM api.
+Difference is the React using the virtual DOM to gain as much preformenvce as possible.
+ 
+*How JSX looks under the hood, how to create a `div` container with some children*
+```jsx
+    const rootElement = document.getElementById('root')
 
-* Lazy loading in React
-* Suspense
-* Render props
-* useMemo
-* useCallback
-* useReducer
-* Code splitting with Lazy
-* UseLayoutEffect
+    const element = React.createElement('div', {
+      className: 'container',
+      children: [
+        React.createElement('span', null, 'Legia'),
+        ' ',
+        React.createElement('span', null, 'Warszawa!'),
+      ],
+    })
 
-UseMemo = Almost like a should component update in class based components.
-It Memoize the value and will not re-render the component  if the value has not changed.
+    ReactDOM.render(element, rootElement)
+
+```
+ 
