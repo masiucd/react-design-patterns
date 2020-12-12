@@ -7,6 +7,7 @@
 - [React Without JSX](#without_jsx)
 - [JSX under the hood](#jsx_under_the_hood)
 - [Forms](#forms)
+- [Key prop](#key_prop)
 
 ## About <a name = "about"></a>
 
@@ -146,3 +147,12 @@ function UsernameForm({ onSubmitUsername }) {
   )
 }
 ```
+
+### React key prop <a name = "key_prop"></a>
+
+Keys help React identify which items have changed, are added, or are removed from the list.
+Keys should be given to the elements inside the array to give the elements a stable identity, it is not recommended do use the index as the key prop to keep track on the element.
+**Why?**
+
+- A key cannot be identical to that of a sibling component.
+- A key should not ever change between renders.
