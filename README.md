@@ -1,4 +1,4 @@
-# Epic React ⚛️ƛ🚀⭐️
+# Reactive design/concepts ⚛️ƛ🚀⭐️
 
 ## Table of Contents
 
@@ -162,3 +162,68 @@ Keys should be given to the elements inside the array to give the elements a sta
 
 The key should never change, for example if you hade a list with items and each item used the index as its key (_don't use the index as the key!!!_)
 you could pretty fast spot on some problems, everything works for now but what happened if you remove a existing item from the list. The index value will also change and `React` will lose to keep track on what item it should observe. Never use the key or any dynamic key that would change.
+
+### state <a name = "useState"></a>
+
+`React.useState` is a function that accepts a single argument.
+The argument you pass in will be the initialState for the instance of the components, in a simple counter example you want to start count from zero so our initial state would be zero
+
+```jsx
+const Counter = () => {
+  const [count, setCount] = React.useState(0) // initialState
+
+  return (
+    <div>
+      <button onClick={() => setCount(p => p + 1)}>+</button>
+      <strong>{count}</strong>
+      <button onClick={() => setCount(p => p - 1)}>-</button>
+    </div>
+  )
+}
+```
+
+React state will update our component as soon we update our state. It works like a observer the wait for the state to update `using setCount` in this case.
+As soon we click one of the buttons the counter should increase/decrease and the component would be updated.
+
+### useEffect <a name = "useEffect"></a>
+
+Every application would need some kind of side effect to make the application interactive.
+The `useEffect` hook is just what we use in react to trigger some kind of side effect in our component.
+after React renders (and re-renders) your component to the DOM.
+It accepts a callback function which React will call after the DOM has been updated.
+
+```jsx
+React.useEffect(() => {
+  // code goes in here
+})
+```
+
+Let's show a example of how we can store something in local-storage and only re-render our component as soon something change.
+
+```jsx
+function Greeting({ initialName = "" }) {
+  const [name, setName] = React.useState(() => localStorage.getItem("name") || initialName)
+
+  React.useEffect(() => {
+    localStorage.setItem("name", name)
+  }, [name])
+
+  const handleChange = event => {
+    setName(event.target.value)
+  }
+
+  return (
+    <div>
+      <form>
+        <label htmlFor="name">Name: </label>
+        <input onChange={handleChange} id="name" />
+      </form>
+      {name ? <strong>Hello {name}</strong> : "Please type your name"}
+    </div>
+  )
+}
+```
+
+Why I using a function as my initialValue?
+It's a technique that React accepts that will make a lazy load, reading from local-storage can be slow and we don't want to read from local-storage if our initialValue has not been changed.
+This is a great way to optimize your application a bit.
