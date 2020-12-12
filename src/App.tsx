@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react"
+/** @jsx jsx */
+import { jsx } from "@emotion/react"
+import styled from "@emotion/styled"
+import { cx, css } from "@emotion/css"
+
+const Wrapper = styled.div`
+  margin: 0 auto;
+`
+
+const cls1 = css`
+  font-size: 20px;
+  background: green;
+`
+const cls2 = css`
+  font-size: 20px;
+  background: blue;
+`
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Wrapper>
+      <div className={cx(cls1, cls2)}>
+        <h1>Hello</h1>
+        <div></div>
+      </div>
+    </Wrapper>
+  )
 }
 
-export default App;
+export default App
