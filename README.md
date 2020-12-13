@@ -11,7 +11,7 @@
 - [useState](#useState)
 - [useEffect](#useEffect)
 - [custom hooks](#custom_hooks)
-- [hooksFlow](#hooks_flow)
+- [lift state](#lift_state)
 
 ## About <a name = "about"></a>
 
@@ -296,4 +296,60 @@ function Greeting({ initialName = "" }) {
     </div>
   )
 }
+```
+
+### lifting state <a name = "lift_state"></a>
+
+Lifting state is a common React interview question where we simply do as it sounds like. We lift our state that are lower in the tree and lifting up to the least common parent. If you want to read more about `lifting state` I highly recommend [react-docs](https://reactjs.org/docs/lifting-state-up.html).
+
+Take this for example:
+We drilling down our props that we can share our state both in `Name component` `Display component`, and `MyTeam component`.
+Imagine if we would have local state in all of the child components, it would not completely sync with the rest of the components.
+
+Another important concept is to `colocate` tou react application.
+`Colocate` means that you actually check if the state in that is higher up in the tree is actually used in other child components. If not then we should remove that state that are higher up in the tree to only be used in the component where it is only used. In this case it is the `Name component`. No we would only re-render the name component when the state updates, i small performance gain here 💪.
+
+```jsx
+import * as React from "react"
+
+function Name() {
+  const [name, setName] = React.useState("")
+  return (
+    <div>
+      <label htmlFor="name">Name: </label>
+      <input id="name" value={name} onChange={e => setName(e.target.value)} />
+    </div>
+  )
+}
+
+function MyTeam({ team, onTeamChange }) {
+  return (
+    <div>
+      <label htmlFor="team">My team: </label>
+      <input id="team" value={team} onChange={onTeamChange} />
+    </div>
+  )
+}
+
+function Display({ team }) {
+  return <div>{`your favorite team is: ${team}!`}</div>
+}
+
+function App() {
+  const [team, setAnimal] = React.useState("")
+
+  const onTeamChange = event => {
+    setAnimal(event.target.value)
+  }
+  return (
+    <form>
+      <Name />
+      <MyTeam team={team} onTeamChange={onTeamChange} />
+
+      <Display team={team} />
+    </form>
+  )
+}
+
+export default App
 ```
