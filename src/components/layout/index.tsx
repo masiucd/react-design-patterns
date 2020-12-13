@@ -1,8 +1,9 @@
 import React from "react"
-import GlobalStyles from "../global-styles"
+import GlobalStyles from "../../styles/global-styles"
 import styled from "@emotion/styled"
-import { Typography } from "./typography"
+import { Typography } from "../../styles/typography"
 import useTheme from "../../hooks/theme"
+import Nav from "./nav"
 
 const Main = styled.main`
   margin: 0 auto;
@@ -15,7 +16,8 @@ const Layout: React.FC = ({ children }) => {
     <>
       <GlobalStyles />
       <Typography />
-      <button onClick={handleTheme}>Toggle Theme</button>
+      <Nav handleTheme={handleTheme} theme={theme} />
+
       <Main>{children}</Main>
     </>
   )

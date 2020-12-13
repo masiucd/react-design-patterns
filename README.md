@@ -10,6 +10,7 @@
 - [key prop](#key_prop)
 - [useState](#useState)
 - [useEffect](#useEffect)
+- [useRef](#useRef)
 - [custom hooks](#custom_hooks)
 - [lift state](#lift_state)
 - [tic-tac-toe](#tic-tac-toe)
@@ -230,6 +231,57 @@ Why I using a function as my initialValue?
 It's a technique that React accepts that will make a lazy load, reading from local-storage can be slow and we don't want to read from local-storage if our initialValue has not been changed.
 This is a great way to optimize your application a bit.
 
+HTTP requests are another common side-effect that we need to do in applications. We expect to get som kind of data as soon our component has been rendered to the screen.
+If you want to call a async function inside your `useEffect` there is some thing you should know.
+
+#### This in not allowed
+
+```jsx
+useEffect(async () => {
+  const res = await doSomeStuff()
+}, [])
+```
+
+The reason this doesn’t work is because when you make a function async, it
+will automatically returns a promise.
+So if you want to use async/await, the best way to do that is like this:
+
+```jsx
+React.useEffect(() => {
+  async function foo() {
+    const result = await doSomeStuff()
+    // do something if we got something
+  }
+  foo()
+})
+```
+
+### useRef <a name = "useRef"></a>
+
+useRef is a great alternative if anytime you need to keep reference to something, like a DOM node, and you want to be able to make some changes to that reference `without trigger a re-render`, of you need the component to re-render the `useState` would be a better option.
+the ref that you will create will b have the current value ass soon the component gets mounted to the DOM.
+
+```jsx
+const Foo = () => {
+  const ref = React.createRef(null) //here ref will be undefined
+
+  // When out component has been mounted
+  // we now have access to the ref
+  React.useEffect(() => {
+    const refValue = ref.current
+    console.log(refValue) // <div className="foo-bar"> <div><p>hello</p></div> </div>
+  }, [])
+
+  return (
+    <div ref={ref}>
+      <div className="foo-bar">
+        <p>hello</p>
+      </div>
+    </div>
+  )
+}
+```
+
 ### customHooks <a name = "custom_hooks"></a>
 
 `usePrevious` hook the get the reference from the previous value
@@ -360,8 +412,20 @@ export default App
 ```jsx
 import * as React from "react"
 
+function useLocalStorage(key, defaultValue = []) {
+  const [state, setState] = React.useState(
+    () => JSON.parse(localStorage.getItem(key)) || defaultValue
+  )
+
+  React.useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(state))
+  }, [key, state])
+
+  return [state, setState]
+}
+
 function Board() {
-  const [squares, setSquares] = React.useState(Array(9).fill(null))
+  const [squares, setSquares] = useLocalStorage(Array(9).fill(null))
   const [isX, setIsX] = React.useState(true)
   const [status, setStatus] = React.useState("")
 
