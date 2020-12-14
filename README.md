@@ -15,6 +15,7 @@
 - [lift state](#lift_state)
 - [tic-tac-toe](#tic-tac-toe)
 - [error boundary](#error-boundary)
+- [useReducer](#use-reducer)
 
 ## About <a name = "about"></a>
 
@@ -572,3 +573,44 @@ else just render the children.
 You can see the `ErrorBouldery` as a giant try _catch around_ your components
 
 One last little thing, by passing the `ErrorBoundary` a key prop it will re-render the `ErrorBoundary` component should you as a user could try another try, otherwise the `ErrorBoundary` component will still be mounted on to the page becasue we hav enot trigger any re-render if the props has been changed.
+
+### useReducer hook <a name = "use-reducer"></a>
+
+Sometimes you would need something more advanced then the regular setState hook, if you want to separate the state logic from the components that updates the state, `useReducer` is a very handy hook to use.
+If you are used to old day `Redux` then the `useReducer` hook works very similar.
+
+Here is a example of a simple counter using the reducer:
+
+```jsx
+const initialState = {
+  count: 0,
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment":
+      return {
+        ...state,
+        count: state.count + 1,
+      }
+    case "decrement":
+      return {
+        ...state,
+        count: state.count - 1,
+      }
+    default:
+      throw new Error(`action.type ${action.type} is not supported!💣`)
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = React.useReducer(reducer, initialState)
+
+  return (
+    <>
+      <button onClick={() => dispatch({ type: "increment" })}>{state.count}</button>
+      <button onClick={() => dispatch({ type: "decrement" })}>{state.count}</button>
+    </>
+  )
+}
+```
