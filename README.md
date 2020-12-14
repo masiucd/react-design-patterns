@@ -14,6 +14,7 @@
 - [custom hooks](#custom_hooks)
 - [lift state](#lift_state)
 - [tic-tac-toe](#tic-tac-toe)
+- [error boundary](#error-boundary)
 
 ## About <a name = "about"></a>
 
@@ -516,3 +517,58 @@ function App() {
 
 export default App
 ```
+
+### Error boundary <a name = "error-boundary"></a>
+
+Error boundaries is a component that we can wrap around our child components around to catch possible errors and for example display those error instead of the application totally get crashed.
+
+`From React docs`
+
+> Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed. Error boundaries catch errors during rendering, in lifecycle methods, and in constructors of the whole tree below them.
+
+```jsx
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true }
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    logErrorToMyService(error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>
+    }
+
+    return this.props.children
+  }
+}
+```
+
+So basically if we catch a error the we will display:
+
+```jsx
+<h1>Something went wrong </h1>
+```
+
+else just render the children.
+
+```jsx
+<ErrorBoundary>
+  <CompA />
+  <CompB />
+</ErrorBoundary>
+```
+
+You can see the `ErrorBouldery` as a giant try _catch around_ your components
+
+One last little thing, by passing the `ErrorBoundary` a key prop it will re-render the `ErrorBoundary` component should you as a user could try another try, otherwise the `ErrorBoundary` component will still be mounted on to the page becasue we hav enot trigger any re-render if the props has been changed.
