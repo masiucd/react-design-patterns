@@ -16,6 +16,8 @@
 - [tic-tac-toe](#tic-tac-toe)
 - [error boundary](#error-boundary)
 - [useReducer](#use-reducer)
+- [useCallback](#use-cb)
+- [useImperativeHandle](#imperative-handler)
 
 ## About <a name = "about"></a>
 
@@ -615,10 +617,11 @@ function Counter() {
 }
 ```
 
-### UseCallback
+### UseCallback <a name = "use-cb"></a>
 
 Sometimes you need to pass a function as a prop and perhaps you are using a useEffect inside the child component where you receive the function the you get as a prop.
-The useEffect is depending on the function if it should re-render or not, but we defined the function in the parent body so we will get a new value every time we re-render so basically we should get a infinitive loop here. To the rescue, `useCallback` if we would wrap out function that we pass down in a useCallback hook the function will only be updated if the prop that it receive changes. This is really hard to explain but let's show a code snippet when [Kent C Dodds](https://github.com/kentcdodds) from the [Epic React Course](https://epicreact.dev/) shows how this would work
+The useEffect is depending on the function if it should re-render or not, but we defined the function in the parent body so we will get a new value every time we re-render so basically we should get a infinitive loop here. To the rescue, `useCallback` if we would wrap out function that we pass down in a useCallback hook the function will only be updated if the prop that it receive changes. This is really hard to explain but let's show a code snippet.
+This is some code inspiration when [Kent C Dodds](https://github.com/kentcdodds) from the [Epic React Course](https://epicreact.dev/) shows how this would work.
 
 ```jsx
 import * as React from "react"
@@ -676,7 +679,8 @@ const useAsync = (asyncCallback, initialState) => {
 }
 
 function PokemonInfo({ pokemonName }) {
-  const cbFn = React.useCallback(() => { // we wrap the function in a useCallback to use it later as a decency in the useAsync hook
+  const cbFn = React.useCallback(() => {
+    // we wrap the function in a useCallback to use it later as a decency in the useAsync hook
     if (!pokemonName) {
       return
     }
@@ -699,4 +703,86 @@ function PokemonInfo({ pokemonName }) {
 
   throw new Error("This should be impossible")
 }
+```
+
+## useImperativeHandler <a name = "imperative-handler"></a>
+
+useImperativeHandler hook is nothing you should use frequently ore really aim for. If you using it you should always think if there is another solution to this problem.
+We should minimize imperative program as much as possible to make our code more readable and follow the way `React` want us to write our code.
+
+But let's say that you want to send down a `ref` to a child component and from there trigger some functions that we then want to acces from the parent component. This works similar like the imperative way of getting DOM elements like using, `document.querySelector` ore `document.getElementById`.
+With declaring `useImperativeHandler` we then have access via the ref in the parent component with our 2 `scrollToTop` and `scrollToBottom`.
+
+```jsx
+import * as React from "react"
+
+const MessagesDisplay = React.forwardRef(function (props, ref) {
+  const { messages } = props
+
+  const containerRef = React.useRef()
+  React.useLayoutEffect(() => {
+    scrollToBottom()
+  })
+
+  function scrollToTop() {
+    containerRef.current.scrollTop = 0
+  }
+  function scrollToBottom() {
+    containerRef.current.scrollTop = containerRef.current.scrollHeight
+  }
+
+  React.useImperativeHandle(ref, () => ({
+    scrollToTop,
+    scrollToBottom,
+  }))
+
+  return (
+    <div ref={containerRef} role="log">
+      {messages.map((message, index, array) => (
+        <div key={message.id}>
+          <strong>{message.author}</strong>: <span>{message.content}</span>
+          {array.length - 1 === index ? null : <hr />}
+        </div>
+      ))}
+    </div>
+  )
+})
+
+function App() {
+  const messageDisplayRef = React.useRef()
+  const [messages, setMessages] = React.useState(allMessages.slice(0, 8))
+  const addMessage = () =>
+    messages.length < allMessages.length
+      ? setMessages(allMessages.slice(0, messages.length + 1))
+      : null
+  const removeMessage = () =>
+    messages.length > 0 ? setMessages(allMessages.slice(0, messages.length - 1)) : null
+
+  const foo = () => {
+    console.log("foooo")
+  }
+  const scrollToTop = () => messageDisplayRef.current.scrollToTop()
+  const scrollToBottom = () => {
+    messageDisplayRef.current.scrollToBottom()
+  }
+
+  return (
+    <div className="messaging-app">
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <button onClick={addMessage}>add message</button>
+        <button onClick={removeMessage}>remove message</button>
+      </div>
+      <hr />
+      <div>
+        <button onClick={scrollToTop}>scroll to top</button>
+      </div>
+      <MessagesDisplay ref={messageDisplayRef} messages={messages} />
+      <div>
+        <button onClick={scrollToBottom}>scroll to bottom</button>
+      </div>
+    </div>
+  )
+}
+
+export default App
 ```
