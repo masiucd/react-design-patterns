@@ -2,6 +2,7 @@ import React from "react"
 import { css, cx } from "@emotion/css"
 import styled from "@emotion/styled"
 import { motion } from "framer-motion"
+import { NavList } from "./nav-list"
 
 interface navProps {
   handleTheme: () => void
@@ -31,10 +32,10 @@ const ToggleBtn = styled(motion.button)`
 const Nav: React.FC<navProps> = ({ handleTheme, theme }) => {
   return (
     <nav className={cx(navStyles())}>
-      <h1>navbar</h1>
       <ToggleBtn onClick={handleTheme} whileHover={{ scale: 0.85 }} transition={{ duration: 0.4 }}>
         {theme === "dark" ? "🌞" : "🌑"}
       </ToggleBtn>
+      <NavList />
     </nav>
   )
 }

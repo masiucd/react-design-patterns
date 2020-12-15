@@ -112,6 +112,9 @@ const GlobalStyles = () => {
           p {
             color: var(---textColor);
           }
+          a {
+            text-decoration: none;
+          }
         `}
       />
     </>
