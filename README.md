@@ -614,3 +614,89 @@ function Counter() {
   )
 }
 ```
+
+### UseCallback
+
+Sometimes you need to pass a function as a prop and perhaps you are using a useEffect inside the child component where you receive the function the you get as a prop.
+The useEffect is depending on the function if it should re-render or not, but we defined the function in the parent body so we will get a new value every time we re-render so basically we should get a infinitive loop here. To the rescue, `useCallback` if we would wrap out function that we pass down in a useCallback hook the function will only be updated if the prop that it receive changes. This is really hard to explain but let's show a code snippet when [Kent C Dodds](https://github.com/kentcdodds) from the [Epic React Course](https://epicreact.dev/) shows how this would work
+
+```jsx
+import * as React from "react"
+
+import {
+  fetchPokemon,
+  PokemonForm,
+  PokemonDataView,
+  PokemonInfoFallback,
+  PokemonErrorBoundary,
+} from "../pokemon"
+
+const asyncReducer = (state, action) => {
+  switch (action.type) {
+    case "pending": {
+      return { status: "pending", data: null, error: null }
+    }
+    case "resolved": {
+      return { status: "resolved", data: action.data, error: null }
+    }
+    case "rejected": {
+      return { status: "rejected", data: null, error: action.error }
+    }
+    default: {
+      throw new Error(`Unhandled action type: ${action.type}`)
+    }
+  }
+}
+
+const useAsync = (asyncCallback, initialState) => {
+  const [state, dispatch] = React.useReducer(asyncReducer, {
+    status: "idle",
+    pokemon: null,
+    error: null,
+    ...initialState,
+  })
+
+  React.useEffect(() => {
+    const promise = asyncCallback()
+    if (!promise) {
+      return
+    }
+
+    dispatch({ type: "pending" })
+    promise.then(
+      data => {
+        dispatch({ type: "resolved", data })
+      },
+      error => {
+        dispatch({ type: "rejected", error })
+      }
+    )
+  }, [asyncCallback])
+  return state
+}
+
+function PokemonInfo({ pokemonName }) {
+  const cbFn = React.useCallback(() => { // we wrap the function in a useCallback to use it later as a decency in the useAsync hook
+    if (!pokemonName) {
+      return
+    }
+    return fetchPokemon(pokemonName)
+  }, [pokemonName])
+
+  const state = useAsync(cbFn, { status: pokemonName ? "pending" : "idle" }, [pokemonName])
+
+  const { data: pokemon, status, error } = state
+
+  if (status === "idle" || !pokemonName) {
+    return "Submit a pokemon"
+  } else if (status === "pending") {
+    return <PokemonInfoFallback name={pokemonName} />
+  } else if (status === "rejected") {
+    throw error
+  } else if (status === "resolved") {
+    return <PokemonDataView pokemon={pokemon} />
+  }
+
+  throw new Error("This should be impossible")
+}
+```
