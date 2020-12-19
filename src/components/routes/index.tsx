@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom"
 
 const StartPage = React.lazy(() => import("../pages/start"))
 const MemoizationPage = React.lazy(() => import("../pages/memo"))
+const ContactPage = React.lazy(() => import("../pages/contact"))
 
 const Routes = () => {
   return (
@@ -10,6 +11,7 @@ const Routes = () => {
       <Switch>
         <Route exact path="/" component={StartPage} />
         <Route exact path="/memo" component={MemoizationPage} />
+        <Route exact path="/contact" component={ContactPage} />
       </Switch>
     </React.Suspense>
   )

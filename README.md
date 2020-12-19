@@ -18,6 +18,8 @@
 - [useReducer](#use-reducer)
 - [useCallback](#use-cb)
 - [useImperativeHandle](#imperative-handler)
+- [React design patterns](#react-design-patterns)
+  - [Compound Components](#compound-components)
 
 ## About <a name = "about"></a>
 
@@ -785,4 +787,31 @@ function App() {
 }
 
 export default App
+```
+
+## React Design Patterns <a name = "react-design-patterns" ></a>
+
+### Compound Components <a name = "compound-components" ></a>
+
+Compound components are components there are really powerful together but pretty useless by them own. Take for example a `<select>` and a `<option>` tag.
+By the own they don't fill any special meaning but together we would get a dropdown with different options that our user can pick and choose.
+
+```jsx
+<select>
+  <option value="A">A</option>
+  <option value="B">B</option>
+  <option value="C">C</option>
+</select>
+```
+
+So with a compound component we create a component that is very flexible and works with different kind of options, It can be data like props ore other components for example:
+
+```jsx
+<Select
+  options={[
+    { value: "A", display: "Option A" },
+    { value: "B", display: "Option B" },
+    { value: "C", display: "Option C" },
+  ]}
+/>
 ```
