@@ -18,9 +18,10 @@
 - [useReducer](#use-reducer)
 - [useCallback](#use-cb)
 - [useImperativeHandle](#imperative-handler)
-- [React design patterns](#react-design-patterns)
-  - [Compound Components](#compound-components)
-  - [Prop Getters](#prop-getters)
+- [react design patterns](#react-design-patterns)
+  - [compound components](#compound-components)
+  - [prop getters](#prop-getters)
+  - [state reducers](#state-reducer)
 
 ## About <a name = "about"></a>
 
@@ -867,3 +868,5 @@ function App() {
 
 export default App
 ```
+
+### State reducer <a name = "state-reducer" ></a>
