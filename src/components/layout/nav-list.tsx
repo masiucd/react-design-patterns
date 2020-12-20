@@ -1,4 +1,3 @@
-import React from "react"
 import { Link } from "react-router-dom"
 import { css, cx } from "@emotion/css"
 
@@ -30,6 +29,10 @@ export const NavList = () => {
     {
       name: "memoization",
       path: "memo",
+    },
+    {
+      name: "contact",
+      path: "contact",
     },
   ]
 

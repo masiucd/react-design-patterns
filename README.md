@@ -870,3 +870,7 @@ export default App
 ```
 
 ### State reducer <a name = "state-reducer" ></a>
+
+Same mental model as using `props getters` what we want to do is to give s option for how the user will get a lot of flexibility to change the current behavior if it will not suit them well.
+Think of another library you building and you ship some really cool functionality with a already set up state reducer where the developer only have to dispatch the actions on where it is needed.
+But sometimes the user would need to change the reducer because it is not what the developer would need for a expected moment. I highly recommend to read [state reducer pattern](https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks) by `Kent C Dodds`.

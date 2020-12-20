@@ -1,27 +1,42 @@
-import { useState } from "react"
+import { useReducer } from "react"
 
-type Fn = () => void
+type Action = { type: "ON" } | { type: "OFF" } | { type: "TOGGLE" }
 
-interface UseToggleReturnType {
+type State = {
   on: boolean
-  setOnFn: Fn
-  setOffFn: Fn
-  toggle: Fn
+}
+type Dispatch = (action: Action) => void
+
+function toggleReducer(state: State, action: Action) {
+  switch (action.type) {
+    case "ON":
+      return {
+        ...state,
+        on: true,
+      }
+    case "OFF":
+      return {
+        ...state,
+        on: false,
+      }
+    case "TOGGLE":
+      return {
+        ...state,
+        on: !state.on,
+      }
+
+    default: {
+      throw new Error(`Unhandled type: action}`)
+    }
+  }
 }
 
-export const useToggle = (initialState: boolean = false): UseToggleReturnType => {
-  const [on, setOn] = useState(initialState)
+export const useToggle = ({ reducer = toggleReducer } = {}) => {
+  const [{ on }, dispatch] = useReducer(reducer, { on: false })
 
-  const toggle = () => {
-    setOn(p => !p)
-  }
-
-  const setOnFn = () => {
-    setOn(true)
-  }
-  const setOffFn = () => {
-    setOn(false)
-  }
+  const setOffFn = () => dispatch({ type: "OFF" })
+  const setOnFn = () => dispatch({ type: "ON" })
+  const toggle = () => dispatch({ type: "TOGGLE" })
 
   return { on, setOffFn, setOnFn, toggle }
 }
