@@ -20,6 +20,7 @@
 - [useImperativeHandle](#imperative-handler)
 - [React design patterns](#react-design-patterns)
   - [Compound Components](#compound-components)
+  - [Prop Getters](#prop-getters)
 
 ## About <a name = "about"></a>
 
@@ -814,4 +815,55 @@ So with a compound component we create a component that is very flexible and wor
     { value: "C", display: "Option C" },
   ]}
 />
+```
+
+### Prop Getters <a name = "prop-getters" ></a>
+
+Prop Getters is a way for us to compose different behavers,like event into our components without overriding the current event.
+If you worked with [react table](https://github.com/tannerlinsley/react-table) before then you probably used `prop getters`.
+Take this code example from [Kent C Dodds, Epic React course](https://github.com/kentcdodds)
+The reason why we use the `handleTogglerProps` function is that we can compose different functions without overriding the first event.
+Let's say you would write any library for some kind of toggle switch, the company that uses your library need a addition of a onClick event but want to keep the current event without overriding it. Thats what `handleTogglerProps` solves in this case.
+
+```jsx
+import * as React from "react"
+import { Switch } from "../switch"
+
+const callAll = (...fns) => (...args) => fns.forEach(fn => fn?.(...args))
+
+function useToggle() {
+  const [on, setOn] = React.useState(false)
+  const toggle = () => setOn(!on)
+
+  const handleTogglerProps = ({ onClick, ...props } = {}) => {
+    return {
+      "aria-pressed": on,
+      onClick: callAll(onClick, toggle),
+      ...props,
+    }
+  }
+  return { on, handleTogglerProps }
+}
+
+function App() {
+  const { on, handleTogglerProps } = useToggle()
+  return (
+    <div>
+      <Switch {...handleTogglerProps({ on })} />
+      <hr />
+      <button
+        aria-label="custom-button"
+        {...handleTogglerProps({
+          "aria-label": "custom-button",
+          onClick: () => console.info("onButtonClick"),
+          id: "custom-button-id",
+        })}
+      >
+        {on ? "on" : "off"}
+      </button>
+    </div>
+  )
+}
+
+export default App
 ```
