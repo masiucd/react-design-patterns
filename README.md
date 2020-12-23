@@ -22,6 +22,9 @@
   - [compound components](#compound-components)
   - [prop getters](#prop-getters)
   - [state reducers](#state-reducer)
+- [component composition](#component-composition)
+- [testing](#testing)
+  - [implementation detail](#implementation-details)
 
 ## About <a name = "about"></a>
 
@@ -874,3 +877,85 @@ export default App
 Same mental model as using `props getters` what we want to do is to give s option for how the user will get a lot of flexibility to change the current behavior if it will not suit them well.
 Think of another library you building and you ship some really cool functionality with a already set up state reducer where the developer only have to dispatch the actions on where it is needed.
 But sometimes the user would need to change the reducer because it is not what the developer would need for a expected moment. I highly recommend to read [state reducer pattern](https://kentcdodds.com/blog/the-state-reducer-pattern-with-react-hooks) by `Kent C Dodds`.
+
+### Component composition <a name = "component-composition"></a>
+
+I think to get a grasp of how `component composition` really works it is a good idea to start with knowing the difference of `inheritance` vs `composition`.
+If you been in some kind of technical school, like a computer science program or any boot-camp you possibly have been heard of this term before.
+Simply said, `inheritance` is when design your types on what they are while `composition` is when you design your types around what they do.
+
+Basically every react component is a function that's just wait until it gets called, just like when can compose different function into a given,expected result, same goes for out react components.
+imagine that we have a wrapper component that could look a little bit different depending on where we needs it in out application.
+I will not have some much logic but still very important to et the expected behavior for the components that it wraps around, and this children components can be any children components, you probably thinking right about a very special prop with in react, and yes that is `props.children`.
+It is a very underestimated prop that don't get to much creed but is such a powerful prop with in react.
+Thanks to `props.children` we get power to use composition, `component composition`.
+
+```jsx
+const Wrapper = props => {
+  return <div className={cx(wrapperStyles, props.className)}>{props.children}</div>
+}
+
+import Wrapper from "@components/Wrapper"
+import ComA from "@components/CompA"
+import CompB from "@components/CompB"
+import CompC from "@components/CompC"
+
+const SomeComponent = () => {
+  return (
+    <Wrapper>
+      <CompA />
+      <CompB />
+      <CompC />
+    </Wrapper>
+  )
+}
+```
+
+When can compose what ever components we need thanks to `props.children`, this how `component composition` works in react and thats is why it is so powerful to use over inheritance.This is not a topic of what is better ore worse, but in my opinion I prefer to use composition over inheritance just of how we can cherry pick on what we what and are not depended on out parent class like in inheritance.
+The react team itself says that they use composition over inheritance due to the power of customization and flexibility.
+
+### Testing <a name = "testing"></a>
+
+Testing is a very important topic that boost our confidence that when we ship our code into production we can be more confident that it should work as expected.
+There are of course bad written tests and better written tests. There are some topics and steps that I think you should follow when testing your react components.
+
+```jsx
+import * as React from "react"
+import { render, screen } from "@testing-library/react"
+import Counter from "../../components/counter"
+import userEvent from "@testing-library/user-event"
+
+test("counter increments and decrements when the buttons are clicked", () => {
+  render(<Counter />)
+
+  const decrement = screen.getByRole("button", { name: "Decrement" })
+  const increment = screen.getByRole("button", { name: "Increment" })
+  const message = screen.getByText(/Current count: 0/i)
+
+  expect(message).toHaveTextContent("Current count: 0")
+  userEvent.click(increment)
+  expect(message).toHaveTextContent("Current count: 1")
+
+  userEvent.click(decrement)
+  expect(message).toHaveTextContent("Current count: 0")
+})
+```
+
+### Implementation details <a name = "implementation-details"></a>
+
+When we test our react components we should think as being the user, how should the user use this application, what should they do and expect.
+The user does not care if we are using a functional component a class component, if we written out utils functions using pure functions, in the end the only thing that's matter is that the user just want a good user experience,`UX` and have some kind of purpose when they visit our app.
+So by testing we should not think of the details from a developer perspective by rather from the user perspective
+
+a good check to see if you have written your tests with an `implementation details` thought is if you change some of your components and a lot of them starting to fail for some reason, perhaps you getting the button by using:
+
+```jsx
+document.querySelector("button")[0]
+```
+
+what happens if we add another button, then the index would be changed as well.
+A much better approach would be to use something like:
+
+```jsx
+screen.getByRole("button", { name: "your-button-name" })
+```

@@ -31,6 +31,10 @@ export const NavList = () => {
       path: "memo",
     },
     {
+      name: "faq",
+      path: "faq",
+    },
+    {
       name: "contact",
       path: "contact",
     },

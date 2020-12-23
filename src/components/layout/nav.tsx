@@ -32,9 +32,7 @@ const ToggleBtn = styled(motion.button)`
 
 const Nav: React.FC<navProps> = ({ handleTheme, theme }) => {
   const { scrollX, scrollY, scrollDirection } = useScroll()
-  console.log("scrollY ", scrollY)
-  console.log("scrollX ", scrollX)
-  console.log("scrollDirection ", scrollDirection)
+
   return (
     <nav className={cx(navStyles())}>
       <ToggleBtn onClick={handleTheme} whileHover={{ scale: 0.85 }} transition={{ duration: 0.4 }}>
