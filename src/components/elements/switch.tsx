@@ -12,14 +12,13 @@ const inputStyles = css`
     height: 4em;
     position: relative;
     cursor: pointer;
-    user-select: none;
     background: #fbfbfb;
     border-radius: 4em;
     padding: 4px;
     transition: all 0.4s ease;
     border: 2px solid #e8eae9;
   }
-  .toggle-input:focus + .toggle-btn::after,
+  input:focus + .toggle-btn::after,
   .toggle-btn:active::after {
     box-sizing: initial;
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08),
@@ -45,7 +44,7 @@ const inputStyles = css`
     background: #86d993;
   }
   .toggle-btn.toggle-btn-on:active {
-    box-shadow: none;
+    box-shadow: 1px 1px #ccc;
   }
   .toggle-btn.toggle-btn-on:active::after {
     margin-left: -1.6em;
@@ -53,8 +52,7 @@ const inputStyles = css`
   .toggle-btn:active::after {
     padding-right: 1.6em;
   }
-  .toggle-input {
-    /* visually hidden but still accessible */
+  input {
     border: 0;
     clip: rect(0 0 0 0);
     height: 1px;
@@ -73,8 +71,6 @@ interface SwitchProps {
   ariaLabel?: string
 }
 
-const noop = () => {}
-
 const Switch: React.FC<SwitchProps> = ({ on, onClick, className = "", ariaLabel, ...props }) => {
   const btnClassName = [className, "toggle-btn", on ? "toggle-btn-on" : "toggle-btn-off"]
     .filter(Boolean)
@@ -86,8 +82,7 @@ const Switch: React.FC<SwitchProps> = ({ on, onClick, className = "", ariaLabel,
         className="toggle-input"
         type="checkbox"
         checked={on}
-        // onChange={noop}
-        onClick={onClick}
+        onChange={onClick}
         data-testid="toggle-input"
       />
       <span className={btnClassName} {...props} />
