@@ -959,3 +959,63 @@ A much better approach would be to use something like:
 ```jsx
 screen.getByRole("button", { name: "your-button-name" })
 ```
+
+Example of how we can test a form component with a util function that will generate random name and password for our fields and still work
+
+```jsx
+import * as React from "react"
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import Login from "../../components/login"
+
+const fakerFn = () => {
+  const names = () => {
+    return ["bob", "frank", "sally", "mike", "tina"]
+  }
+  const passwords = () => {
+    return ["123456", "sdsa@121!", "2ddcmov1##12%$lol", "helloWorld"]
+  }
+  const random = xs => {
+    return xs[Math.floor(Math.random() * xs.length)]
+  }
+
+  const fakePassword = () => {
+    const items = passwords()
+    return random(items)
+  }
+  const fakeUserName = () => {
+    const items = names()
+    return random(items)
+  }
+
+  return {
+    fakePassword,
+    fakeUserName,
+  }
+}
+
+const buildLoginForm = overrides => {
+  const username = fakerFn().fakeUserName()
+  const password = fakerFn().fakePassword()
+
+  return { username, password, ...overrides }
+}
+
+test("submitting the form calls onSubmit with username and password", () => {
+  const handleSubmit = jest.fn()
+
+  render(<Login onSubmit={handleSubmit} />)
+
+  const { username, password } = buildLoginForm({ username: "boboboboob" })
+
+  const userNameField = screen.getByLabelText(/username/i)
+  const passwordField = screen.getByLabelText(/password/i)
+
+  userEvent.type(userNameField, username)
+  userEvent.type(passwordField, password)
+
+  userEvent.click(screen.getByRole("button", /submit/i))
+
+  expect(handleSubmit).toHaveBeenLastCalledWith({ username, password })
+})
+```
