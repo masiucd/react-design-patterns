@@ -1,6 +1,5 @@
-import React, { useState } from "react"
 import { css, cx } from "@emotion/css"
-import LoginForm from "../login-form"
+import LoginSubmission from "../login-form/login-submission"
 
 const styles = () =>
   css`
@@ -10,22 +9,11 @@ const styles = () =>
     }
   `
 
-interface LoginData {
-  username: string
-  password: string
-}
-
 const LoginPage = () => {
-  const [loginData, setLoginData] = useState<Partial<LoginData>>()
-  console.log("loginData", loginData)
-  const onSubmit = (data: LoginData) => {
-    setLoginData(data)
-  }
-
   return (
     <div className={cx(styles())}>
       <h1>Login</h1>
-      <LoginForm onSubmit={onSubmit} />
+      <LoginSubmission />
     </div>
   )
 }

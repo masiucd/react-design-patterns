@@ -13,6 +13,12 @@ const loginStyles = () => {
       width: 16em;
       border-radius: var(--border-radius);
       border: 2px solid var(--textColor);
+      transition: var(--main-trans);
+      &:focus {
+        outline: none;
+        width: 15.5em;
+        border: 2px solid var(--red);
+      }
     }
     button {
       padding: 0.2em 0.4em;
@@ -45,7 +51,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit }) => {
     event.preventDefault()
 
     const submitData: LoginData = { username, password } as const
-
+    // console.log(submitData)
     onSubmit(submitData)
 
     setUsername("")

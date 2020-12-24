@@ -7,7 +7,6 @@ interface Props {
 }
 
 const StyledWrapper = styled(motion.div)`
-  border: 2px solid red;
   padding: 1rem;
 `
 
