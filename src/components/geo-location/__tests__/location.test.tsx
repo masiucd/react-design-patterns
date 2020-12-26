@@ -7,7 +7,15 @@ beforeAll(() => {
     getCurrentPosition: jest.fn(),
   }
 })
+afterAll(() => {
+  jest.clearAllMocks()
+  jest.resetAllMocks()
+})
 
+afterEach(() => {
+  jest.resetAllMocks()
+  jest.restoreAllMocks()
+})
 function defered() {
   let resolve
   let reject

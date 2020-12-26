@@ -49,6 +49,7 @@
     "@testing-library/react-hooks": "^3.7.0",
     "@testing-library/user-event": "^12.6.0",
     "@types/react-dom": "^16.9.10",
-    "msw": "^0.24.2"
+    "msw": "^0.24.2",
+    "react-test-renderer": "^16.14.0"
   }
 }

@@ -25,6 +25,7 @@
 - [component composition](#component-composition)
 - [testing](#testing)
   - [implementation detail](#implementation-details)
+  - [testing hooks](#testing-hooks)
 
 ## About <a name = "about"></a>
 
@@ -1018,4 +1019,64 @@ test("submitting the form calls onSubmit with username and password", () => {
 
   expect(handleSubmit).toHaveBeenLastCalledWith({ username, password })
 })
+```
+
+### Testing custom hooks <a name ="testing-hooks"></a>
+
+You basically would not write a specific test just for a hook. While you using your hooks in your component you will already have som good test coverage for that.
+If you want to write a specific test for your hook, you could use for example [react-hooks-testing-library](https://github.com/testing-library/react-hooks-testing-library#:~:text=The%20react%2Dhooks%2Dtesting%2D,of%20your%20amazing%20custom%20hook.)
+
+Here is example how you could test toggle hook without using `react-hooks-testing-library`
+
+```jsx
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { act } from "react-dom/test-utils"
+import { useToggler } from "../toggler"
+
+interface UseToggler {
+  state: boolean
+  setToFalse: () => void
+  setToTrue: () => void
+  toggler: () => void
+}
+
+describe("useToggler", () => {
+  let result: Partial<UseToggler>
+  function TestComp() {
+    result = useToggler()
+    return null
+  }
+
+  test("should work as expected ", () => {
+    render(<TestComp />)
+
+    expect(result.state).toBeFalsy()
+
+    act(() => {
+      if (result.setToTrue) {
+        result.setToTrue()
+      }
+    })
+    expect(result.state).toBeTruthy()
+
+    act(() => {
+      if (result.setToFalse) {
+        result.setToFalse()
+      }
+    })
+    expect(result.state).toBeFalsy()
+
+    act(() => {
+      if (result.toggler) {
+        result.toggler()
+        result.toggler()
+      }
+    })
+    expect(result.state).toBeFalsy()
+  })
+
+
+})
+
 ```

@@ -16,10 +16,10 @@ export const Content = ({ on }: Props) => {
     off: { opacity: 0, height: 0 },
   }
   return (
-    <div>
+    <div data-testid="content-component-content">
       <StyledWrapper initial="off" animate={on ? "on" : "off"} variants={variants}>
         {on ? (
-          <p>
+          <p data-testid="content-paragraph">
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate exercitationem, iste
             quos quas necessitatibus assumenda soluta perferendis? Molestiae, corporis temporibus
             quas, doloremque nemo enim repellat, recusandae ipsam quo blanditiis atque.

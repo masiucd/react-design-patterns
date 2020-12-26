@@ -17,7 +17,6 @@ const Layout: React.FC = ({ children }) => {
       <GlobalStyles />
       <Typography />
       <Nav handleTheme={handleTheme} theme={theme} />
-
       <Main>{children}</Main>
     </>
   )
