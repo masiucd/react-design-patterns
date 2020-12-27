@@ -28,6 +28,7 @@ const ToggleBtn = styled(motion.button)`
   cursor: pointer;
   border: none;
   outline: none;
+  z-index: 10;
 `
 
 const Nav: React.FC<navProps> = ({ handleTheme, theme }) => {

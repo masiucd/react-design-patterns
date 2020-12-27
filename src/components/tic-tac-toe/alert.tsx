@@ -28,7 +28,7 @@ const styles = () =>
       padding: 2rem 1rem;
       border-radius: var(--border-radius);
       p {
-        color: var(--textColor);
+        color: var(--alertText);
         text-shadow: 1px 1px var(--background);
       }
       button {
@@ -43,19 +43,23 @@ export const Alert: React.FC<AlertProps> = ({ winner, winningChar, newGame }) =>
     hide: { opacity: 0, y: "-100%" },
     show: { opacity: 1, y: 0 },
   }
+
   return (
     <motion.div
       className={cx(styles())}
       initial="hide"
       animate={winner ? "show" : "hide"}
       variants={variants}
+      data-testid="alert-component"
     >
-      <div className="body">
-        <p>Winner is player {winningChar}</p>
-        <BtnPrimary type="button" onClick={() => newGame()}>
-          new game
-        </BtnPrimary>
-      </div>
+      {winner && (
+        <div className="body">
+          <p>Winner is player {winningChar}</p>
+          <BtnPrimary type="button" onClick={() => newGame()}>
+            new game
+          </BtnPrimary>
+        </div>
+      )}
     </motion.div>
   )
 }

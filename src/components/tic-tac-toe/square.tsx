@@ -9,7 +9,11 @@ interface SquareProps {
 
 const Square = ({ index, className, handleClick, squares }: SquareProps) => {
   return (
-    <div className={`square ${cx(className)}`} onClick={() => handleClick(index)}>
+    <div
+      className={`square ${cx(className)}`}
+      onClick={() => handleClick(index)}
+      data-testid="square-item"
+    >
       {squares[index]}
     </div>
   )

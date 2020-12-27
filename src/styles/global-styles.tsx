@@ -24,7 +24,7 @@ const GlobalStyles = () => {
             --lightGrey: #f2f4f6;
             --transparentDark: rgba(0, 0, 0, 0.05);
             --transparentDark2: rgba(0, 0, 0, 0.1);
-            --transparentDark3: rgba(0, 0, 0, 0.06);
+            --transparentDark3: rgba(0, 0, 0, 0.56);
             /* Define Colors intentions */
 
             --primary: var(--green);
@@ -95,12 +95,14 @@ const GlobalStyles = () => {
             --background: var(--white);
             --lineColor: var(--greyish);
             --alertColor: var(--transparentDark3);
+            --alertText: var(----lightGrey);
           }
           body[data-theme="dark"] {
             --textColor: var(--green);
             --background: var(--dark2);
             --lineColor: var(--blueGreen);
             --alertColor: var(--grey);
+            --alertText: var(----lightGrey);
           }
 
           ul,
