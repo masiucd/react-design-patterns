@@ -26,6 +26,8 @@
 - [testing](#testing)
   - [implementation detail](#implementation-details)
   - [testing hooks](#testing-hooks)
+- [performance](#performance)
+  - [code splitting](#code-splitting)
 
 ## About <a name = "about"></a>
 
@@ -1079,4 +1081,53 @@ describe("useToggler", () => {
 
 })
 
+```
+
+### Performance <a name = "performance" >
+
+React performance and how we can optimize out react projects to be as fast and tight as possible, using code splitting, lazy loading, memoization etc.
+
+##### Code splitting <a name = "code-splitting"> </a>
+
+Code splitting is what the name actually describes we lazy load our code to only been used when needed, this is one way of code splitting.
+For example when the user enter the start page there is no reason to render the stuff that the user would not be able to use before getting around the application.
+this optimize the application to become even faster and making a much more snappier experience
+
+With Lazy imports in react we can code split our components.
+
+```jsx
+const Component = React.lazy(() => import("../AnotherComponent"))
+```
+
+to make it more useable and perhaps load the component before user really want to use,(`still lazy loaded of course`) it so we always can be 1 step ahead to make a really snappy experience we can do it like this.
+
+```jsx
+const loadComponent = () => import("../AnotherComponent")
+const Component = React.lazy(loadComponent)
+```
+
+so when a element is for example focused and hover before the user clicks a button to show a expensive element to be shown we can pre load the component.
+
+```jsx
+import * as React from "react"
+const loadGlob = () => import("../globe")
+const Globe = React.lazy(loadGlob)
+
+function App() {
+  const [showGlobe, setShowGlobe] = React.useState(false)
+
+  return (
+    <div>
+      <label onMouseEnter={loadGlob} onFocus={loadGlob}>
+        <input type="checkbox" checked={showGlobe} onChange={e => setShowGlobe(e.target.checked)} />
+        {" show globe"}
+      </label>
+      <div style={{ width: 400, height: 400 }}>
+        <React.Suspense fallback={<div>...loading</div>}>
+          {showGlobe ? <Globe /> : null}
+        </React.Suspense>
+      </div>
+    </div>
+  )
+}
 ```

@@ -5,7 +5,6 @@ type Action = { type: "ON" } | { type: "OFF" } | { type: "TOGGLE" }
 type State = {
   on: boolean
 }
-type Dispatch = (action: Action) => void
 
 function toggleReducer(state: State, action: Action) {
   switch (action.type) {

@@ -1,5 +1,4 @@
 import { css, cx } from "@emotion/css"
-import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { checkWinner } from "../../utils/check-winner"
 import { Alert } from "./alert"
@@ -31,6 +30,7 @@ const styles = () => css`
 
 const Game = () => {
   const [squares, setSquares] = useState<Array<string | null>>(Array(9).fill(null))
+
   const [isX, setIsX] = useState(false)
   const [isWinner, setIsWinner] = useState(false)
   const winner = checkWinner(squares)
