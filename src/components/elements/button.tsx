@@ -13,9 +13,14 @@ export const BtnPrimary = styled.button`
   border-radius: 4px;
   outline: 0;
   box-shadow: var(--shadowMd);
+  transition: var(--main-trans);
   &:active {
     position: relative;
     top: 6px;
     box-shadow: var(--shadowXl);
+  }
+  &:hover {
+    color: var(--textColor);
+    background-color: var(--background);
   }
 `

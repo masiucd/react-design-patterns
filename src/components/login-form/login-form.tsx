@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { cx, css } from "@emotion/css"
+import { validationHandler } from "../../utils/form-validation"
 
 const loginStyles = () => {
   return css`
@@ -7,6 +8,14 @@ const loginStyles = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    label {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.5em;
+      span {
+        text-transform: capitalize;
+      }
+    }
     input {
       padding: 0.2em 0.4em;
       font-size: 1.2rem;
@@ -46,16 +55,24 @@ interface Props {
 const LoginForm: React.FC<Props> = ({ onSubmit }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [userNameError, setUsernameError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+
+  const clear = (): void => {
+    setPasswordError("")
+    setUsernameError("")
+  }
+  const clearFields = (): void => {
+    setUsername("")
+    setPassword("")
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const submitData: LoginData = { username, password } as const
-    // console.log(submitData)
-    onSubmit(submitData)
+    validationHandler(username, password, setUsernameError, setPasswordError, onSubmit, clear)
 
-    setUsername("")
-    setPassword("")
+    clearFields()
   }
 
   const handleChange = (
@@ -63,28 +80,35 @@ const LoginForm: React.FC<Props> = ({ onSubmit }) => {
     dispatch: React.Dispatch<React.SetStateAction<string>>
   ) => {
     const { value } = event.target
+
     dispatch(value)
   }
 
   return (
     <form className={cx(loginStyles())} onSubmit={handleSubmit}>
-      <label htmlFor="username">username</label>
-      <input
-        type="text"
-        name="username"
-        id="username"
-        value={username}
-        onChange={e => handleChange(e, setUsername)}
-      />
+      <label htmlFor="username">
+        <span>username</span>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          value={username}
+          onChange={e => handleChange(e, setUsername)}
+        />
+        {userNameError && <strong>{userNameError}</strong>}
+      </label>
 
-      <label htmlFor="username">password</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        value={password}
-        onChange={e => handleChange(e, setPassword)}
-      />
+      <label htmlFor="username">
+        <span>password</span>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          value={password}
+          onChange={e => handleChange(e, setPassword)}
+        />
+        {passwordError && <strong>{passwordError}</strong>}
+      </label>
 
       <button type="submit">submit</button>
     </form>

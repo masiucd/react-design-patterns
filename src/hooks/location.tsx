@@ -24,7 +24,7 @@ export const useLocation = (options = {}) => {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [options])
 
   return { position, error }
 }

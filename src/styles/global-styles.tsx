@@ -94,11 +94,13 @@ const GlobalStyles = () => {
             --textColor: var(--black);
             --background: var(--white);
             --lineColor: var(--greyish);
+            --alertColor: var(--transparentDark3);
           }
           body[data-theme="dark"] {
             --textColor: var(--green);
             --background: var(--dark2);
             --lineColor: var(--blueGreen);
+            --alertColor: var(--grey);
           }
 
           ul,
