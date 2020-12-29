@@ -28,6 +28,7 @@
   - [testing hooks](#testing-hooks)
 - [performance](#performance)
   - [code splitting](#code-splitting)
+  - [memoization](#memo)
 
 ## About <a name = "about"></a>
 
@@ -1100,6 +1101,7 @@ const Component = React.lazy(() => import("../AnotherComponent"))
 ```
 
 to make it more useable and perhaps load the component before user really want to use,(`still lazy loaded of course`) it so we always can be 1 step ahead to make a really snappy experience we can do it like this.
+This is so called `eager` loading.
 
 ```jsx
 const loadComponent = () => import("../AnotherComponent")
@@ -1130,4 +1132,32 @@ function App() {
     </div>
   )
 }
+```
+
+If you are using `web pack` to bundle your application it as also possible to use [magic comments](https://webpack.js.org/api/module-methods/#magic-comments) by `web pack`.
+
+you simply put the comment as a comment before tour dynamic import, like this.
+
+```jsx
+import(/* webpackPrefetch: true */ "./Component")
+```
+
+When webpack sees this comment, it adds this to the head of the document:
+
+```html
+<link rel="prefetch" as="script" href="/static/js/1.chunk.js" />
+```
+
+it will load the javascript code ahead of time and simply store it in the cache so we get a more snappy experience.
+
+##### memoization <a name ="memo"></a>
+
+Working with memorization in React, using hooks like `useCallback` and `useMemo` we can really optimize out code. For example if we running any expensive calculation like finding what is your home town through all different cities in US it can be a pretty expensive call, as long our function is pure without any side effects we could memoize our function that we would not recalculate if the input is the same. This go in hand with all programing techniques we should only memoize,cache our values if the functions are pure,o herwise we would get a unexpected behavior.
+
+**useMemo** example
+
+so only re calculate our double function when the input changes otherwise keep it in the cache
+
+```jsx
+const fn = React.useMemo(() => double(value), [value])
 ```
