@@ -1152,7 +1152,7 @@ it will load the javascript code ahead of time and simply store it in the cache 
 
 ##### memoization <a name ="memo"></a>
 
-Working with memorization in React, using hooks like `useCallback` and `useMemo` we can really optimize out code. For example if we running any expensive calculation like finding what is your home town through all different cities in US it can be a pretty expensive call, as long our function is pure without any side effects we could memoize our function that we would not recalculate if the input is the same. This go in hand with all programing techniques we should only memoize,cache our values if the functions are pure,o herwise we would get a unexpected behavior.
+Working with memorization in React, using hooks like `useCallback` and `useMemo` we can really optimize out code. For example if we running any expensive calculation like finding what is your home town through all different cities in US it can be a pretty expensive call, as long our function is pure without any side effects we could memoize our function that we would not recalculate if the input is the same. This go in hand with all programing techniques we should only memoize,cache our values if the functions are pure,o otherwise we would get a unexpected behavior.
 
 **useMemo** example
 
@@ -1161,3 +1161,38 @@ so only re calculate our double function when the input changes otherwise keep i
 ```jsx
 const fn = React.useMemo(() => double(value), [value])
 ```
+
+there is also `React.memo` thar we can use our component around to prevent ree-renders,
+simply like:
+
+```jsx
+  const Comp = React.memo(({a,b...props}) => {
+    return(
+      <div>
+        {a}
+        {b}
+      </div>
+    )
+  })
+
+  // or we can do
+
+  const MemoizedComponent = React.memo(Comp)
+```
+
+If you used classes before using hooks you probably remember the lifecycle method that check if previous props was not equal to the current prop, we can to the same with `React.memo`, check this out:
+
+```jsx
+const MemoizedComponent = React.memo(Comp, (prevProps, nextProps) => {
+  console.log("nextProps", nextProps)
+  if (prevProps.getItemProps !== nextProps.getItemProps) {
+    // trigger re-render
+    return false
+  }
+  if (prevProps.items !== nextProps.items) {
+    return false
+  }
+})
+```
+
+True would not trigger a re-render while false will re-render the component.

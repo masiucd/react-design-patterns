@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import CountButton from "./count-button"
 import { css, cx } from "@emotion/css"
 
@@ -19,8 +19,8 @@ export const Counter = () => {
 
   return (
     <div className={cx(countStyles())}>
-      <CountButton count={count} onClick={increment1} />
-      <CountButton count={count2} onClick={increment2} />
+      <CountButton count={count} onClick={increment1} dataTestid="btn-1" />
+      <CountButton count={count2} onClick={increment2} dataTestid="btn-2" />
     </div>
   )
 }

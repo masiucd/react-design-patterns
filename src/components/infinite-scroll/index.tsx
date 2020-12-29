@@ -61,7 +61,7 @@ const InfiniteScroll = () => {
 
   return (
     <div className={cx(styles())}>
-      <ul>
+      <ul data-testid="task-list-InfiniteScroll">
         {tasksData.map(task => (
           <li key={task.id} className={cx(liStyles(task.completed))}>
             {task.title}

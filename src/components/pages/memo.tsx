@@ -1,12 +1,13 @@
-import React from "react"
+import Example from "../memoazation/count-input-ex"
 import { Counter } from "../memoazation/counter"
-import { Parent } from "../memoazation/parent"
+import Tabata from "../tabata-timer/tabata"
 
 const MemoizationPage = () => {
   return (
     <div>
-      <Parent />
+      <Example />
       <Counter />
+      <Tabata />
     </div>
   )
 }
