@@ -39,7 +39,14 @@ function NameInput({ name, onChange }: NameInputProps) {
   )
 }
 
-const CountButtonMemoized = React.memo(CountButton)
+const CountButtonMemoized = React.memo(CountButton, (prevProps, nextProps): any => {
+  // compare Button props
+  console.log(prevProps.count, nextProps.count)
+  if (prevProps.count !== nextProps.count) {
+    console.log("I will re render")
+    return false
+  }
+})
 const NameInputMemoized = React.memo(NameInput)
 
 function Example() {

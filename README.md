@@ -29,6 +29,7 @@
 - [performance](#performance)
   - [code splitting](#code-splitting)
   - [memoization](#memo)
+  - [react context performance](#react-context-performance)
 
 ## About <a name = "about"></a>
 
@@ -1196,3 +1197,58 @@ const MemoizedComponent = React.memo(Comp, (prevProps, nextProps) => {
 ```
 
 True would not trigger a re-render while false will re-render the component.
+
+##### react context performance <a name ="react-context-performance"></a>
+
+If you are using React context within your application that is wrapped around a lot of components, there could be a good idea to `memoize` our state and dispatch function like this:
+
+```jsx
+const CountContext = React.createContext()
+
+function CountProvider(props) {
+  const [count, setCount] = React.useState(0)
+  const value = React.useMemo(() => [count, setCount], [count])
+  return <CountContext.Provider value={value} {...props} />
+}
+```
+
+This a a solution for some scenario's but we have to remember that the `CountProvider` and all it's children will still re-render if that state updates, even if we using `memo`.
+memo only compares if something has been changed or not,shallow compare. So if that state updates we will always get a new state value and for that it will trigger a re-render.
+
+We could change the current solution to use reducer instead of state, and create 2 providers , one for state and one for our dispatch function.
+Since dispatch value will never change.This how the `React team` recommend to do it, te get as much performance as possible.
+
+```jsx
+const CountStateProvider = React.createContext()
+const CountDispatchContext = React.createContext()
+
+function countReducer(state, action) {
+  switch (action.type) {
+    case "INCREMENT": {
+      return { ...state, count: state.count + 1 }
+    }
+    case "DECREMENT": {
+      return { ...state, count: state.count - 1 }
+    }
+    case "RESET": {
+      return { ...state, count: (state.count = 0) }
+    }
+    default: {
+      throw new Error(`Unhandled action type: ${action.type}`)
+    }
+  }
+}
+
+function AppProvider({ children }) {
+  const [state, dispatch] = React.useReducer(countReducer, {
+    count: 0,
+  })
+  return (
+    <CountStateProvider.Provider value={state}>
+      <CountDispatchContext.Provider value={dispatch}>{children}</CountDispatchContext.Provider>
+    </CountStateProvider.Provider>
+  )
+}
+```
+
+This is just a overhead example of how it would work, but imagine if you had a much more complex state and data to work with, then this is the way you want to do it.
