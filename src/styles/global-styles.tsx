@@ -10,6 +10,7 @@ const GlobalStyles = () => {
             /* Define Colors as colors */
             --green: #00ebc7;
             --red: #ff5470;
+            --red-shadow: rgba(211, 47, 47, 0.3);
             --yellow: #fde24f;
             --black: #1b2d45;
             --dark: #232946;

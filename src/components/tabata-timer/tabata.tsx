@@ -1,6 +1,6 @@
 import { useCount } from "../../hooks/count"
-import { css, cx } from "@emotion/css"
-import { useRef } from "react"
+import { css } from "@emotion/css"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 
 const styles = () => css`
@@ -15,7 +15,7 @@ const styles = () => css`
   }
 `
 
-const btnWrapperStyles = (on: boolean) =>
+const btnWrapperStyles = () =>
   css`
     display: flex;
     padding: 1rem;
@@ -45,16 +45,27 @@ const initCounter = (time: number) => (fn: () => void) => {
 
 const Tabata = () => {
   const { count, increment, reset } = useCount({ initialCount: 0, step: 1 })
+  const { count: restTime, increment: incrementRestTime, reset: resetRestTime } = useCount({
+    initialCount: 0,
+    step: 1,
+  })
+
+  const [round, setRound] = useState(0)
 
   const functionRef = useRef<React.MutableRefObject<undefined> | (() => void)>()
-  const btnRef = useRef(false)
+  const restFunctionRef = useRef<React.MutableRefObject<undefined> | (() => void)>()
 
-  const runTimer = () => {
-    btnRef.current = true
+  const runRestTimer = useCallback(() => {
+    restFunctionRef.current = initCounter(1000)(() => {
+      incrementRestTime()
+    })
+  }, [incrementRestTime])
+
+  const runTimer = useCallback(() => {
     functionRef.current = initCounter(1000)(() => {
       increment()
     })
-  }
+  }, [increment])
 
   const stopTimer = () => {
     if (functionRef.current !== undefined && typeof functionRef.current === "function") {
@@ -62,19 +73,50 @@ const Tabata = () => {
     }
   }
 
+  const stopRestTime = () => {
+    if (restFunctionRef.current !== undefined && typeof restFunctionRef.current === "function") {
+      restFunctionRef.current()
+    }
+  }
+
+  useEffect(() => {
+    if (count > 20) {
+      reset()
+      stopTimer()
+      runRestTimer()
+      setTimeout(() => {
+        runTimer()
+      }, 10005)
+    }
+  }, [count, reset, runRestTimer, runTimer])
+
+  useEffect(() => {
+    if (restTime >= 10) {
+      resetRestTime()
+      stopRestTime()
+      setRound(p => p + 1)
+    }
+  }, [resetRestTime, restTime])
+
+  useEffect(() => {
+    if (round === 8) {
+      reset()
+      stopTimer()
+      stopRestTime()
+      setRound(0)
+    }
+  }, [reset, round])
+
   return (
     <div className={`tabata-wrapper ${styles()}`}>
       <div className="text">
-        <h1>Tabata</h1>
+        <h3>Tabata</h3>
+        <p>Round{round}</p>
         <h3>{count}</h3>
+        <p>rest time {restTime}</p>
       </div>
-      <div className={`btn-wrapper ${btnWrapperStyles(btnRef.current)}`}>
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          onClick={runTimer}
-          disabled={btnRef.current}
-          style={{ color: btnRef.current ? "var(--danger)" : "var(--textColor)" }}
-        >
+      <div className={`btn-wrapper ${btnWrapperStyles()}`}>
+        <motion.button whileHover={{ scale: 1.1 }} onClick={runTimer}>
           start
         </motion.button>
         <motion.button onClick={stopTimer} whileHover={{ scale: 1.1 }}>
@@ -83,8 +125,9 @@ const Tabata = () => {
         <motion.button
           whileHover={{ scale: 1.1 }}
           onClick={() => {
-            btnRef.current = false
             reset()
+            setRound(0)
+            stopRestTime()
           }}
         >
           reset

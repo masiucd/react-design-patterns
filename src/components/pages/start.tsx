@@ -1,4 +1,5 @@
 import Accordion from "../accordion/accordion"
+import Carousel from "../carousel/carousel"
 import Location from "../geo-location/geo-location"
 import Users from "../users/users"
 
@@ -9,6 +10,7 @@ const Start = () => {
       <Users />
       <Location />
       <Accordion />
+      <Carousel />
     </div>
   )
 }
