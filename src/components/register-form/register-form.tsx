@@ -32,6 +32,8 @@ type Action =
   | { type: "SET_FILED_TOUCHED"; payload: FormValue<boolean> }
   | { type: "SET_FILED_ERRORS"; payload: FormValue<string> }
   | { type: "SUBMIT_ATTEMPT" }
+  | { type: "SUBMIT_SUCCESS" }
+  | { type: "SUBMIT_FAILURE"; payload: FormValue<string> }
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -52,6 +54,17 @@ function reducer(state: State, action: Action) {
       return {
         ...state,
         isSubmitting: true,
+      }
+    case "SUBMIT_SUCCESS":
+      return {
+        ...state,
+        isSubmitting: false,
+      }
+    case "SUBMIT_FAILURE":
+      return {
+        ...state,
+        isSubmitting: false,
+        submitError: action.payload,
       }
     case "SET_FILED_TOUCHED":
       return {
@@ -102,7 +115,7 @@ const useForm = ({ initialValues, onSubmit, validate }: UseFormProps) => {
     dispatch({ type: "SET_FILED_TOUCHED", payload: { [name]: true } })
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     // Validate
     // Mark each filed as touched
@@ -113,7 +126,12 @@ const useForm = ({ initialValues, onSubmit, validate }: UseFormProps) => {
     dispatch({ type: "SUBMIT_ATTEMPT" })
 
     if (!Object.keys(formState.errors).length) {
-      onSubmit(formState.values)
+      try {
+        await onSubmit(formState.values)
+        dispatch({ type: "SUBMIT_SUCCESS" })
+      } catch (submitError) {
+        dispatch({ type: "SUBMIT_FAILURE", payload: submitError })
+      }
     } else {
       const errors = validate ? validate(formState.errors) : {}
       dispatch({ type: "SET_FILED_ERRORS", payload: errors })
