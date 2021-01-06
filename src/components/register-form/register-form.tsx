@@ -33,7 +33,7 @@ type Action =
   | { type: "SET_FILED_TOUCHED"; payload: FormValue<boolean> }
   | { type: "SET_ERRORS"; payload: FormValue<string> }
   | { type: "SUBMIT_ATTEMPT" }
-  | { type: "SUBMIT_SUCCESS" }
+  | { type: "SUBMIT_SUCCESS"; payload: Record<string, string> }
   | { type: "SUBMIT_FAILURE"; payload: string }
 
 function reducer(state: State, action: Action) {
@@ -60,7 +60,10 @@ function reducer(state: State, action: Action) {
     case "SUBMIT_SUCCESS":
       return {
         ...state,
-        values: {},
+        values: {
+          ...state.values,
+          ...action.payload,
+        },
         isSubmitting: false,
       }
     case "SUBMIT_FAILURE":
@@ -84,7 +87,7 @@ function reducer(state: State, action: Action) {
 
 interface UseFormProps {
   initialValues: Record<string, string>
-  onSubmit: (values: Record<string, string>) => void
+  onSubmit: (values: Record<string, string>) => Promise<Record<string, string>>
   validate?: (values: Record<string, string>) => Record<string, string>
 }
 
@@ -124,8 +127,8 @@ const useForm = ({ initialValues, onSubmit, validate }: UseFormProps) => {
     dispatch({ type: "SUBMIT_ATTEMPT" })
     if (!Object.keys(formState.errors).length) {
       try {
-        await onSubmit(formState.values)
-        dispatch({ type: "SUBMIT_SUCCESS" })
+        const res = await onSubmit(formState.values)
+        dispatch({ type: "SUBMIT_SUCCESS", payload: res })
       } catch (submitError) {
         dispatch({ type: "SUBMIT_FAILURE", payload: submitError })
       }
@@ -170,6 +173,7 @@ export const RegisterForm = () => {
       onSubmit: async values => {
         await sleep(1200)
         alert(JSON.stringify(values, null, 4))
+        return { name: "", email: "", password: "", password2: "" }
       },
       validate: React.useCallback(values => {
         const emailRe = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
@@ -178,7 +182,7 @@ export const RegisterForm = () => {
         if (values.name && values.name.length <= 3) {
           errors.name = "name must be longer then 3 chars"
         }
-        if (!emailRe.test(values.email)) {
+        if (values.email && !values.email.match(emailRe)) {
           errors.email = "not a valid email"
         }
         if (values.password && values.password.length < 5) {
