@@ -1,6 +1,7 @@
 import * as React from "react"
 import { cx, css } from "@emotion/css"
 import styled from "@emotion/styled"
+import { setNestedObjectValues } from "../../utils/setNestedObjectValues"
 
 const StyledError = styled.p`
   color: var(--textColor);
@@ -30,14 +31,14 @@ type Action =
   | { type: "SET_FIELD_VALUE"; payload: FormValue<string> }
   | { type: "FORM_SUBMIT" }
   | { type: "SET_FILED_TOUCHED"; payload: FormValue<boolean> }
-  | { type: "SET_FILED_ERRORS"; payload: FormValue<string> }
+  | { type: "SET_ERRORS"; payload: FormValue<string> }
   | { type: "SUBMIT_ATTEMPT" }
   | { type: "SUBMIT_SUCCESS" }
-  | { type: "SUBMIT_FAILURE"; payload: FormValue<string> }
+  | { type: "SUBMIT_FAILURE"; payload: string }
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
-    case "SET_FILED_ERRORS":
+    case "SET_ERRORS":
       return {
         ...state,
         errors: action.payload,
@@ -54,17 +55,19 @@ function reducer(state: State, action: Action) {
       return {
         ...state,
         isSubmitting: true,
+        touched: setNestedObjectValues(state.values, true),
       }
     case "SUBMIT_SUCCESS":
       return {
         ...state,
+        values: {},
         isSubmitting: false,
       }
     case "SUBMIT_FAILURE":
       return {
         ...state,
         isSubmitting: false,
-        submitError: action.payload,
+        errors: { submitError: action.payload },
       }
     case "SET_FILED_TOUCHED":
       return {
@@ -99,7 +102,7 @@ const useForm = ({ initialValues, onSubmit, validate }: UseFormProps) => {
   React.useEffect(() => {
     if (validate) {
       const errors = validate(formState.values)
-      dispatch({ type: "SET_FILED_ERRORS", payload: errors })
+      dispatch({ type: "SET_ERRORS", payload: errors })
     }
   }, [formState.values, validate])
 
@@ -117,14 +120,8 @@ const useForm = ({ initialValues, onSubmit, validate }: UseFormProps) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    // Validate
-    // Mark each filed as touched
-    // Object.keys(formState.errors).forEach(k => {
-    //   console.log("k", formState.errors[k])
-    //   if (formState.errors[k]) return
-    // })
-    dispatch({ type: "SUBMIT_ATTEMPT" })
 
+    dispatch({ type: "SUBMIT_ATTEMPT" })
     if (!Object.keys(formState.errors).length) {
       try {
         await onSubmit(formState.values)
@@ -134,8 +131,8 @@ const useForm = ({ initialValues, onSubmit, validate }: UseFormProps) => {
       }
     } else {
       const errors = validate ? validate(formState.errors) : {}
-      dispatch({ type: "SET_FILED_ERRORS", payload: errors })
-      return
+      dispatch({ type: "SET_ERRORS", payload: errors })
+      dispatch({ type: "SUBMIT_FAILURE", payload: "oooops" })
     }
   }
 
@@ -177,14 +174,14 @@ export const RegisterForm = () => {
       validate: React.useCallback(values => {
         const emailRe = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
         let errors: Record<string, string> = {}
-        console.log(values)
-        if (values.name.length <= 3) {
+
+        if (values.name && values.name.length <= 3) {
           errors.name = "name must be longer then 3 chars"
         }
         if (!emailRe.test(values.email)) {
           errors.email = "not a valid email"
         }
-        if (values.password.length < 5) {
+        if (values.password && values.password.length < 5) {
           errors.password = "is way to short!"
         }
         if (values.password !== values.password2) {
@@ -199,6 +196,7 @@ export const RegisterForm = () => {
 
   return (
     <form className={cx(formStyles())} onSubmit={handleSubmit}>
+      {errors.submitError && <h3>{errors.submitError}</h3>}
       <label htmlFor="name">
         <input
           type="text"
