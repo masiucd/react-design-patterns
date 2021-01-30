@@ -30,6 +30,7 @@
   - [code splitting](#code-splitting)
   - [memoization](#memo)
   - [react context performance](#react-context-performance)
+  - [suspense](#suspense)
 
 ## About <a name = "about"></a>
 
@@ -1151,6 +1152,7 @@ When webpack sees this comment, it adds this to the head of the document:
 
 it will load the javascript code ahead of time and simply store it in the cache so we get a more snappy experience.
 
+<hr/>
 ##### memoization <a name ="memo"></a>
 
 Working with memorization in React, using hooks like `useCallback` and `useMemo` we can really optimize out code. For example if we running any expensive calculation like finding what is your home town through all different cities in US it can be a pretty expensive call, as long our function is pure without any side effects we could memoize our function that we would not recalculate if the input is the same. This go in hand with all programing techniques we should only memoize,cache our values if the functions are pure,o otherwise we would get a unexpected behavior.
@@ -1198,6 +1200,107 @@ const MemoizedComponent = React.memo(Comp, (prevProps, nextProps) => {
 
 True would not trigger a re-render while false will re-render the component.
 
+```tsx
+import React, { memo } from "react"
+import styled from "@emotion/styled"
+
+interface CountButtonProps {
+  count: number
+  onClick: () => void
+  dataTestid?: string
+}
+
+const Button = styled.button`
+  font-size: 2em;
+`
+
+const CountButton = memo(({ count, onClick, dataTestid = "count-btn" }: CountButtonProps) => {
+  console.log("%c render CountButton", "background: #9C27B0; color: #fff")
+  return (
+    <Button onClick={onClick} data-testid={`button-${dataTestid}`}>
+      {count}
+    </Button>
+  )
+})
+
+export default CountButton
+```
+
+```tsx
+import React, { useState } from "react"
+import { useCount } from "../../hooks/count"
+import CountButton from "./count-button"
+import { css } from "@emotion/css"
+
+const styles = () =>
+  css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+  `
+
+const inputStyles = () =>
+  css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
+    padding: 1rem;
+    input {
+      outline: 0;
+    }
+  `
+
+interface NameInputProps {
+  name: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
+
+function NameInput({ name, onChange }: NameInputProps) {
+  return (
+    <div className={inputStyles()}>
+      <label htmlFor="name">
+        <span>name</span>
+      </label>
+      <input type="text" id="name" value={name} onChange={onChange} />
+    </div>
+  )
+}
+
+const CountButtonMemoized = React.memo(CountButton, (prevProps, nextProps): any => {
+  // compare Button props
+  console.log(prevProps.count, nextProps.count)
+  if (prevProps.count !== nextProps.count) {
+    console.log("I will re render")
+    return false
+  }
+})
+const NameInputMemoized = React.memo(NameInput)
+
+function Example() {
+  const { count, increment } = useCount({ initialCount: 0, step: 1 })
+  const [name, setName] = useState("")
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value)
+  }
+  return (
+    <div className={styles()}>
+      <div>
+        <CountButtonMemoized count={count} onClick={increment} />
+      </div>
+      <div>
+        <NameInputMemoized name={name} onChange={handleChange} />
+      </div>
+      {name ? name + " favorite number is " + count : null}
+    </div>
+  )
+}
+export default Example
+```
+
+<hr/>
 ##### react context performance <a name ="react-context-performance"></a>
 
 If you are using React context within your application that is wrapped around a lot of components, there could be a good idea to `memoize` our state and dispatch function like this:
@@ -1252,3 +1355,7 @@ function AppProvider({ children }) {
 ```
 
 This is just a overhead example of how it would work, but imagine if you had a much more complex state and data to work with, then this is the way you want to do it.
+
+<hr/>
+
+## Suspense <a name="suspense"></a>
