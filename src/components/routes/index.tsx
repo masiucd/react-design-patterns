@@ -8,6 +8,7 @@ const FaqPage = React.lazy(() => import("../pages/faq"))
 const LoginPage = React.lazy(() => import("../pages/login"))
 const GamePage = React.lazy(() => import("../pages/game"))
 const RegisterPage = React.lazy(() => import("../pages/register"))
+const PokemonPage = React.lazy(() => import("../pages/pokemon"))
 
 const Routes = () => {
   return (
@@ -20,6 +21,7 @@ const Routes = () => {
         <Route exact path="/faq" component={FaqPage} />
         <Route exact path="/game" component={GamePage} />
         <Route exact path="/register" component={RegisterPage} />
+        <Route exact path="/pokemon" component={PokemonPage} />
       </Switch>
     </React.Suspense>
   )

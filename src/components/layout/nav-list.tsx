@@ -43,6 +43,10 @@ export const NavList = () => {
       path: "login",
     },
     {
+      name: "pokemon",
+      path: "pokemon",
+    },
+    {
       name: "contact",
       path: "contact",
     },

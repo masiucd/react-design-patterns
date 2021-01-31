@@ -1,18 +1,19 @@
 import React from "react"
 import Layout from "./components/layout"
 import Routes from "./components/routes"
+import { createClient, Provider } from "urql"
 
-interface Foo {
-  bob: string
-  lol: string
-}
+const client = createClient({
+  url: process.env.REACT_APP_POKE_URL!,
+})
 
 function App() {
-  console.log("")
   return (
-    <Layout>
-      <Routes />
-    </Layout>
+    <Provider value={client}>
+      <Layout>
+        <Routes />
+      </Layout>
+    </Provider>
   )
 }
 

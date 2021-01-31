@@ -30,7 +30,8 @@
   - [code splitting](#code-splitting)
   - [memoization](#memo)
   - [react context performance](#react-context-performance)
-  - [suspense](#suspense)
+- [suspense](#suspense)
+  - [concurrent mode](#concurrent-mode)
 
 ## About <a name = "about"></a>
 
@@ -1359,3 +1360,14 @@ This is just a overhead example of how it would work, but imagine if you had a m
 <hr/>
 
 ## Suspense <a name="suspense"></a>
+
+Suspense is the new feature that all react devs just waiting for to be stable, it still no ready to use for production. REact is using it today but they still don't recommend people to use it yet, while a lot can change and their might be some braking changers.
+
+Simply and short enough, Suspense lets your components wait for something before it get rendered to the screen.
+
+##### Concurrent mode <a name="concurrent-mode"></a>
+
+Concurrent mode is the new features that help react fo fetch data and tweak up the performance,
+they are still experimental and like the `React` team says on their documentation:
+
+> . They are not yet a part of a stable React release, but you can try them in an experimental build.
