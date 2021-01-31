@@ -24,7 +24,7 @@ export const NavList = () => {
   const navListData = [
     {
       name: "home",
-      path: "?",
+      path: "",
     },
     {
       name: "memoization",
@@ -33,6 +33,14 @@ export const NavList = () => {
     {
       name: "faq",
       path: "faq",
+    },
+    {
+      name: "game",
+      path: "game",
+    },
+    {
+      name: "form",
+      path: "login",
     },
     {
       name: "contact",

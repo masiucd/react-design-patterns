@@ -1,7 +1,9 @@
 import { css, cx } from "@emotion/css"
-import React, { Reducer, useReducer } from "react"
+import { Reducer, useReducer } from "react"
+import { Link } from "react-router-dom"
 import { checkWinner } from "../../utils/check-winner"
-import { Alert } from "./alert"
+import Fade from "../elements/fade"
+import GameMessage from "./game-message"
 import Square from "./square"
 
 interface State {
@@ -21,7 +23,6 @@ const gameReducer: Reducer<State, Action> = (state: State, action: Action) => {
     case "SET_SQUARE":
       return {
         ...state,
-        // squares: (state.squares[action.payload] = state.isX ? "X" : "O"),
       }
 
     case "SET_X":
@@ -46,6 +47,10 @@ const gameReducer: Reducer<State, Action> = (state: State, action: Action) => {
       throw new Error(`Unsupported type`)
   }
 }
+
+const gameStyles = css`
+  position: relative;
+`
 
 const styles = () => css`
   box-shadow: 0 0 0 1px var(--textColor);
@@ -81,17 +86,20 @@ const GameWithReducer = () => {
   const winner = checkWinner(squares)
 
   const handleClick = (square: number) => {
+    if (winner || squares[square]) {
+      return
+    }
     squares[square] = isX ? "X" : "O"
     dispatch({ type: "SET_X" })
   }
 
+  const newGame = () => {
+    dispatch({ type: "NEW_GAME" })
+  }
+
   return (
-    <>
-      <Alert
-        winner={isWinner}
-        winningChar={String(winner)}
-        newGame={() => dispatch({ type: "NEW_GAME" })}
-      />
+    <div className={cx(gameStyles)}>
+      <GameMessage isWinner={Boolean(winner)} winner={winner} newGame={newGame} />
       <div className={`game-wrapper-with-reducer ${cx(styles())}`}>
         <Square squares={squares} handleClick={handleClick} index={0} />
         <Square squares={squares} handleClick={handleClick} index={1} />
@@ -103,7 +111,7 @@ const GameWithReducer = () => {
         <Square squares={squares} handleClick={handleClick} index={7} />
         <Square squares={squares} handleClick={handleClick} index={8} />
       </div>
-    </>
+    </div>
   )
 }
 
