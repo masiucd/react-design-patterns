@@ -1,7 +1,10 @@
 import { css, cx } from "@emotion/css"
 import { useState, Suspense, lazy } from "react"
 import { useQuery } from "urql"
+import { PokemonType } from "../../utils/types"
 import ErrorBoundary from "../common/error-boundry"
+import PokemonForm from "./pokemon-form"
+import { PokemonOptions } from "./pokemon-options-button"
 const Pokemon = lazy(() => import("./pokemon"))
 
 const pokemonCardStyles = css`
@@ -33,30 +36,17 @@ const pokemonQuery = graphql`
 export const PokemonCard = () => {
   const [pokemon, setPokemon] = useState("")
 
-  const [{ data, fetching, error }, reexecuteQuery] = useQuery({
+  const [{ data, fetching, error }, reexecuteQuery] = useQuery<{ pokemon: PokemonType }>({
     query: pokemonQuery,
     variables: { pokemon: pokemon },
     pause: !pokemon,
   })
 
-  // Venusaur
-  // Bulbasaur
-  // Charmander
-
   return (
     <div className={cx(pokemonCardStyles)}>
-      <form
-        onSubmit={event => {
-          event.preventDefault()
+      <PokemonForm setPokemon={setPokemon} pokemon={pokemon} error={error} fetching={fetching} />
 
-          console.log(data)
-          console.log(error)
-          console.log("fetching", fetching)
-        }}
-      >
-        <input name="pokemon" value={pokemon} onChange={event => setPokemon(event.target.value)} />
-        <button type="submit">submit</button>
-      </form>
+      <PokemonOptions setPokemon={setPokemon} />
       <ErrorBoundary>
         <Suspense fallback={<div>...Loading...</div>}>
           <Pokemon pokemon={data ? data.pokemon : null} />

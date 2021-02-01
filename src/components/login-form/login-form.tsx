@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import { cx, css } from "@emotion/css"
 import { validationHandler } from "../../utils/form-validation"
+import { Input, Label } from "../styled/form-elements"
+import { Button } from "../styled/button"
 
 const loginStyles = () => {
   return css`
@@ -8,38 +10,6 @@ const loginStyles = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    label {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1.5em;
-      span {
-        text-transform: capitalize;
-      }
-    }
-    input {
-      padding: 0.2em 0.4em;
-      font-size: 1.2rem;
-      width: 16em;
-      border-radius: var(--border-radius);
-      border: 2px solid var(--textColor);
-      transition: var(--main-trans);
-      &:focus {
-        outline: none;
-        width: 15.5em;
-        border: 2px solid var(--red);
-      }
-    }
-    button {
-      padding: 0.2em 0.4em;
-      font-size: 1.2rem;
-      width: 16em;
-      border-radius: var(--border-radius);
-      border: 0;
-      background: var(--textColor);
-      outline: 0;
-      margin: 2rem auto;
-      cursor: pointer;
-    }
   `
 }
 
@@ -86,9 +56,9 @@ const LoginForm: React.FC<Props> = ({ onSubmit }) => {
 
   return (
     <form className={cx(loginStyles())} onSubmit={handleSubmit}>
-      <label htmlFor="username">
+      <Label htmlFor="username">
         <span>username</span>
-        <input
+        <Input
           type="text"
           name="username"
           id="username"
@@ -96,11 +66,11 @@ const LoginForm: React.FC<Props> = ({ onSubmit }) => {
           onChange={e => handleChange(e, setUsername)}
         />
         {userNameError && <strong>{userNameError}</strong>}
-      </label>
+      </Label>
 
-      <label htmlFor="username">
+      <Label htmlFor="username">
         <span>password</span>
-        <input
+        <Input
           type="password"
           name="password"
           id="password"
@@ -108,9 +78,9 @@ const LoginForm: React.FC<Props> = ({ onSubmit }) => {
           onChange={e => handleChange(e, setPassword)}
         />
         {passwordError && <strong>{passwordError}</strong>}
-      </label>
+      </Label>
 
-      <button type="submit">submit</button>
+      <Button type="submit">submit</Button>
     </form>
   )
 }
