@@ -1,5 +1,5 @@
 // src/mocks/handlers.js
-import { setupWorker, rest } from "msw"
+import { rest } from "msw"
 
 interface LoginBody {
   username: string
@@ -21,5 +21,3 @@ export const handlers = [
     //
   }),
 ]
-
-export const server = setupWorker(...handlers)

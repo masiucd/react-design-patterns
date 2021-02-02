@@ -1,56 +1,40 @@
-import { render, screen } from "@testing-library/react"
+import { render, screen, act, waitForElementToBeRemoved } from "@testing-library/react"
 import StartPage from "../start"
 import userEvent from "@testing-library/user-event"
+import { useState } from "react"
+import { useLocation } from "../../../hooks/location"
 
-afterAll(() => {
-  jest.clearAllMocks()
-  jest.resetAllMocks()
-})
-
-afterEach(() => {
-  jest.resetAllMocks()
-  jest.restoreAllMocks()
-})
+jest.mock("../../../hooks/location")
 
 describe("<StartPage/>", () => {
   test("should renders correctly", async () => {
-    const coords = {
-      latitude: 50,
-      longitude: 125,
-    }
-    const mockedGeoLocation = {
-      getCurrentPosition: jest.fn().mockImplementation(cb =>
-        Promise.resolve(
-          cb({
-            coords,
-          })
-        )
-      ),
+    const fakePositions = {
+      coords: {
+        latitude: 35,
+        longitude: 139,
+      },
     }
 
-    global.navigator.geolocation = mockedGeoLocation
+    let setReturnValue: Function
+
+    function useMockCurrentPosition() {
+      const state = useState([])
+      setReturnValue = state[1]
+      return state[0]
+    }
+
+    useLocation.mockImplementation(useMockCurrentPosition)
 
     render(<StartPage />)
 
-    const contentWrapper = screen.getByTestId("content-component-content")
-    const loadingsElement = screen.getAllByText(/loading/i)
+    expect(screen.getByText(/loading/i)).toBeInTheDocument()
 
-    expect(screen.getByText(/start page/i)).toBeInTheDocument()
-    expect(contentWrapper).toBeInTheDocument()
+    act(() => {
+      setReturnValue([fakePositions])
+    })
 
-    for (const el of loadingsElement) {
-      expect(el).toBeInTheDocument()
-    }
+    waitForElementToBeRemoved(() => screen.getByText(/loading/i))
 
-    const buttonShowElement = screen.getByRole("button", { name: "show" })
-
-    userEvent.click(buttonShowElement)
-    expect(screen.getByTestId("content-paragraph")).toBeInTheDocument()
-
-    userEvent.click(buttonShowElement)
-    expect(screen.queryByTestId("content-paragraph")).not.toBeInTheDocument()
-
-    expect(screen.getByText(/latitude/i).textContent).toBe(`Latitude: ${coords.latitude}`)
-    expect(screen.getByText(/longitude/i).textContent).toBe(`Longitude: ${coords.longitude}`)
+    screen.debug()
   })
 })

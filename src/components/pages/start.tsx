@@ -17,7 +17,7 @@ const Start = () => {
   return (
     <>
       <Title mainTitle="react stuff" className={titleStyles} />
-      <Users />
+      {/* <Users /> */}
       <Location />
       <Accordion />
     </>
