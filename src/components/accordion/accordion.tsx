@@ -4,9 +4,7 @@ import { useToggle } from "../../hooks/toggle"
 import { BtnPrimary } from "../elements/button"
 import { Content } from "./content"
 
-interface AccordionProps {}
-
-const Accordion: React.FC<AccordionProps> = ({}) => {
+const Accordion: React.FC = () => {
   const ref = useRef(null)
   const { on, setOffFn, toggle } = useToggle()
 
@@ -18,7 +16,6 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
 
   const handleClickInside = () => {
     toggle()
-
     console.log("clicked inside")
   }
 
@@ -27,6 +24,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
       <BtnPrimary ref={ref} onClick={handleClickInside}>
         {on ? "hide" : "show"}{" "}
       </BtnPrimary>
+
       <Content on={on} />
     </>
   )

@@ -28,7 +28,7 @@ const formStyles = css`
   input {
     height: 100%;
     width: 100%;
-    border-radius: 4px 4px 0 0;
+    border-radius: 4px 0 0 4px;
     &:focus {
       width: 99%;
       border: 2px solid var(--green);
@@ -36,8 +36,9 @@ const formStyles = css`
   }
   button {
     display: inline-block;
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 4px 4px 0;
     flex: 1 0 30%;
+    margin: 0.5rem auto;
   }
 `
 

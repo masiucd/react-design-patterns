@@ -7,8 +7,8 @@ export const Input = styled.input`
   border-radius: var(--border-radius);
   border: 2px solid var(--textColor);
   transition: var(--main-trans);
+  outline: none;
   &:focus {
-    outline: none;
     width: 15.5em;
     border: 2px solid var(--red);
   }

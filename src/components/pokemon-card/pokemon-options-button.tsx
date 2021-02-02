@@ -12,6 +12,7 @@ const optionStyles = css`
   button {
     width: 12rem;
     transition: var(--main-trans);
+    margin: 0.75rem auto;
     &:hover {
       background-color: var(--red);
     }

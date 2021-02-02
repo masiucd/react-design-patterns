@@ -8,7 +8,8 @@ import { PokemonOptions } from "./pokemon-options-button"
 const Pokemon = lazy(() => import("./pokemon"))
 
 const pokemonCardStyles = css`
-  border: 2px solid #333;
+  margin: 0 auto;
+  padding: 1em;
 `
 
 const graphql = String.raw
