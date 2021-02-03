@@ -17,6 +17,7 @@ const Fade: React.FC<FadeProps> = ({ children, isActive, className, options }) =
     <AnimatePresence>
       {isActive && (
         <motion.section
+          data-testid="fade-motion-section"
           layout
           className={cx(className)}
           initial={{ opacity: 0, y: "-100%", ...options?.initial }}

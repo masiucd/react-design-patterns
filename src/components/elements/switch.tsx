@@ -85,7 +85,7 @@ const Switch: React.FC<SwitchProps> = ({ on, onClick, className = "", ariaLabel,
         onChange={onClick}
         data-testid="toggle-input"
       />
-      <span className={btnClassName} {...props} />
+      <span data-testid="switch-span-element" className={btnClassName} {...props} />
     </label>
   )
 }
