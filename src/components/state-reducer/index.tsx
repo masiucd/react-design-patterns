@@ -1,8 +1,9 @@
 import { css, cx } from "@emotion/css"
-import { BtnPrimary } from "../elements/button"
+
 import { useToggle } from "../../hooks/toggle"
 import Switch from "../elements/switch"
 import { useState } from "react"
+import { BtnPrimary } from "../styled/button"
 
 const styles = css`
   padding: 3rem 1rem;

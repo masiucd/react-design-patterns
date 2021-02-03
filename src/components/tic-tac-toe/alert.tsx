@@ -1,7 +1,7 @@
 import React from "react"
 import { motion } from "framer-motion"
 import { css, cx } from "@emotion/css"
-import { BtnPrimary } from "../elements/button"
+import { BtnPrimary } from "../styled/button"
 
 interface AlertProps {
   winner: boolean

@@ -1,7 +1,6 @@
 import Accordion from "../accordion/accordion"
 import Title from "../elements/title"
 import Location from "../geo-location/geo-location"
-import Users from "../users/users"
 import { css } from "@emotion/css"
 
 const titleStyles = css`
@@ -17,7 +16,6 @@ const Start = () => {
   return (
     <>
       <Title mainTitle="react stuff" className={titleStyles} />
-      {/* <Users /> */}
       <Location />
       <Accordion />
     </>

@@ -9,6 +9,7 @@ const LoginPage = React.lazy(() => import("../pages/login"))
 const GamePage = React.lazy(() => import("../pages/game"))
 const RegisterPage = React.lazy(() => import("../pages/register"))
 const PokemonPage = React.lazy(() => import("../pages/pokemon"))
+const JsonPlaceholderPage = React.lazy(() => import("../pages/jsp"))
 
 const Routes = () => {
   return (
@@ -22,6 +23,7 @@ const Routes = () => {
         <Route exact path="/game" component={GamePage} />
         <Route exact path="/register" component={RegisterPage} />
         <Route exact path="/pokemon" component={PokemonPage} />
+        <Route exact path="/jsp" component={JsonPlaceholderPage} />
       </Switch>
     </React.Suspense>
   )

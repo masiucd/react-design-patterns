@@ -1,7 +1,7 @@
 import React, { useRef } from "react"
 import { useClickOutside } from "../../hooks/click-outside"
 import { useToggle } from "../../hooks/toggle"
-import { BtnPrimary } from "../elements/button"
+import { BtnPrimary } from "../styled/button"
 import { Content } from "./content"
 
 const Accordion: React.FC = () => {
